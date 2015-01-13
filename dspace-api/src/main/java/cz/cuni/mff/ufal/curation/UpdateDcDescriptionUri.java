@@ -31,7 +31,7 @@ public class UpdateDcDescriptionUri extends AbstractCurationTask {
 		if (dso instanceof Item) {
 			try {
 				Item item = (Item) dso;
-				Metadatum[] vals = item.getMetadata("dc.source.uri");
+				Metadatum[] vals = item.getMetadataByMetadataString("dc.source.uri");
 
 				HashSet<String> sourceUris = new HashSet<String>();
 
@@ -41,7 +41,7 @@ public class UpdateDcDescriptionUri extends AbstractCurationTask {
 					}
 				}
 
-				vals = item.getMetadata("dc.description.uri");
+				vals = item.getMetadataByMetadataString("dc.description.uri");
 				if (null != vals && vals.length > 0) {
 					if (sourceUris.size() > 0) {
 						// if we already have some source uri

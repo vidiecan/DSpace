@@ -171,11 +171,11 @@ public class RequiredMetadata extends AbstractCurationTask
                     }
                     
                     if (!mdPatFound) {
-                        Metadatum[] vals = item.getMetadata(req);
+                        Metadatum[] vals = item.getMetadataByMetadataString(req);
                         if ((itemType == null || input.isAllowedFor(itemType)) && vals.length == 0)
                         {
                         	if (mdEquivalenceMap.containsKey(req)) {
-                        		Metadatum[] valsAlt = item.getMetadata(mdEquivalenceMap.get(req));
+                        		Metadatum[] valsAlt = item.getMetadataByMetadataString(mdEquivalenceMap.get(req));
                         		if (valsAlt == null || valsAlt.length == 0) {
                                 	sb.append(" missing required field: ").append(req);
                                     count++;                    			
@@ -194,9 +194,9 @@ public class RequiredMetadata extends AbstractCurationTask
                         for (RepeatableComponent rc : getRepeatableComponents(colhandle)){
                                 if(rc.getFieldCount()>1){
                                         Iterator<String> i = rc.iterateFields();
-                                        int valuesCount = getCount(item.getMetadata(i.next()));
+                                        int valuesCount = getCount(item.getMetadataByMetadataString(i.next()));
                                         while(i.hasNext()){
-                                    int nextValuesCount = getCount(item.getMetadata(i.next()));
+                                    int nextValuesCount = getCount(item.getMetadataByMetadataString(i.next()));
                                                 if(valuesCount != nextValuesCount){
                                                         sb.append(" missing field in repeatable component ").append(rc.getName());
                                                         count++;

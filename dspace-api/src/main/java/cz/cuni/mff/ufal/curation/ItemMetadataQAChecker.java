@@ -193,7 +193,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
     private void validate_dc_type(Item item, Metadatum[] dcs, StringBuilder results) 
                     throws CurateException
     {
-        Metadatum[] dcs_type = item.getMetadata("dc.type");
+        Metadatum[] dcs_type = item.getMetadataByMetadataString("dc.type");
         // no metadata?
         if ( dcs_type == null || dcs_type.length == 0) {
             throw new CurateException(
@@ -237,7 +237,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
      */
 
     private void validate_dc_language_iso(Item item, Metadatum[] dcs, StringBuilder results) throws CurateException {
-    	Metadatum[] dcs_language_iso = item.getMetadata("dc.language.iso");
+    	Metadatum[] dcs_language_iso = item.getMetadataByMetadataString("dc.language.iso");
         if ( dcs_language_iso != null || dcs_language_iso.length > 0) {
         	for (Metadatum langCodeDC : dcs_language_iso) {
         		String langCode = langCodeDC.value;
@@ -287,7 +287,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
                 String lhs_relation = two_way_relation[0];
                 String rhs_relation = two_way_relation[1];
 
-                Metadatum[] dcs_replaced = item.getMetadata(lhs_relation);
+                Metadatum[] dcs_replaced = item.getMetadataByMetadataString(lhs_relation);
                 if (dcs_replaced.length == 0) {
                     return;
                 }
@@ -299,7 +299,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
                     DSpaceObject dso_mentioned = HandleManager.resolveToObject(context, handle);
                     if (dso_mentioned instanceof Item) {
                         Item item_mentioned = (Item) dso_mentioned;
-                        Metadatum[] dcs_mentioned = item_mentioned.getMetadata(rhs_relation);
+                        Metadatum[] dcs_mentioned = item_mentioned.getMetadataByMetadataString(rhs_relation);
                         for (Metadatum dc_mentioned : dcs_mentioned) {
                             String handle_mentioned = dc_mentioned.value.replaceAll(
                                 handle_prefix, "");
@@ -365,7 +365,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             "metashare.ResourceInfo#DistributionInfo#LicenseInfo.license"
         })
         {
-            Metadatum[] vals = item.getMetadata(no_duplicate);
+            Metadatum[] vals = item.getMetadataByMetadataString(no_duplicate);
             if ( null != vals && vals.length > 1 ) {
                 throw new CurateException(
                     String.format("value [%s] is present multiple times", no_duplicate),
@@ -430,7 +430,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             "dc.subject",
         })
         {
-            Metadatum[] vals = item.getMetadata(md);
+            Metadatum[] vals = item.getMetadataByMetadataString(md);
             if ( null == vals || 0 == vals.length ) {
                 throw new CurateException(
                     String.format("does not contain any [%s] values", md),
@@ -447,7 +447,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             "dc.description.uri",
         }) 
         {
-            Metadatum[] vals = item.getMetadata(md);
+            Metadatum[] vals = item.getMetadataByMetadataString(md);
             if ( null != vals && vals.length > 0 ) {
                 throw new CurateException(
                     String.format("contains suspicious [%s] metadata", md),
