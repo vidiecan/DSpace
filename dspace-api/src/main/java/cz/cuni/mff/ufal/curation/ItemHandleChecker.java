@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.ctask.general.BasicLinkChecker;
@@ -27,10 +27,10 @@ public class ItemHandleChecker extends BasicLinkChecker
     protected List<String> getURLs(Item item)
     {
         // get the handle URL associated with Item
-        DCValue[] handles = item.getMetadata("dc", "identifier", "uri",
+        Metadatum[] handles = item.getMetadata("dc", "identifier", "uri",
                 Item.ANY);
         ArrayList<String> theURLs = new ArrayList<String>();
-        for (DCValue url : handles)
+        for (Metadatum url : handles)
         {
             theURLs.add(url.value);
         }

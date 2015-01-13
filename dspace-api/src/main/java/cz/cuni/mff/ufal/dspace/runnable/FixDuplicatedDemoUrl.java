@@ -4,7 +4,7 @@ import java.io.Console;
 import java.sql.SQLException;
 
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.core.Context;
@@ -33,16 +33,16 @@ public class FixDuplicatedDemoUrl {
 					continue;
 				}
 
-				DCValue[] sl_dcvs = item.getMetadata("metashare",
+				Metadatum[] sl_dcvs = item.getMetadata("metashare",
 						"ResourceInfo#ResourceDocumentationInfo",
 						"samplesLocation", Item.ANY);
-				DCValue[] demo_dcvs = item.getMetadata("local", "demo", "uri",
+				Metadatum[] demo_dcvs = item.getMetadata("local", "demo", "uri",
 						Item.ANY);
 
 				if ((demo_dcvs == null || demo_dcvs.length == 0)
 						&& (sl_dcvs != null && sl_dcvs.length > 0)) {
 					// no local.demo.uri; copy samplesLocation there
-					for (DCValue dcv : sl_dcvs) {
+					for (Metadatum dcv : sl_dcvs) {
 						moveValue(item, dcv);
 					}
 					item.clearMetadata("metashare",
@@ -112,7 +112,7 @@ public class FixDuplicatedDemoUrl {
 
 	}
 
-	private static void moveValue(Item item, DCValue dcv) {
+	private static void moveValue(Item item, Metadatum dcv) {
 		String message = String.format(
 				"Moved value %s from samplesLocation to local.demo.uri ",
 				dcv.value);

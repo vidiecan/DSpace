@@ -41,7 +41,7 @@ import org.dspace.checker.ChecksumResultsCollector;
 import org.dspace.checker.SimpleDispatcher;
 import org.dspace.content.Community;
 import org.dspace.content.DCDate;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.content.Site;
@@ -1588,11 +1588,11 @@ class db {
             while( it.hasNext() )
             {
                 Item i = it.next();
-                DCValue[] labels = i.getMetadata("dc", "rights", "label", Item.ANY);
+                Metadatum[] labels = i.getMetadata("dc", "rights", "label", Item.ANY);
                 String pub_dc_value = "";
                 
                 if ( labels.length > 0 ) {
-                    for ( DCValue dc : labels ) {
+                    for ( Metadatum dc : labels ) {
                         if (pub_dc_value.length() == 0) {
                             pub_dc_value = dc.value;
                         }else {

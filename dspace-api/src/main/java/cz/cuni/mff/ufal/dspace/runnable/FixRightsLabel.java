@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Collection;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.core.Context;
@@ -35,12 +35,12 @@ public class FixRightsLabel {
 
 				// only for items without files
 				if (!item.hasUploadedFiles()) {
-					DCValue[] dcvs = item.getMetadata("dc", "rights", "label",
+					Metadatum[] dcvs = item.getMetadata("dc", "rights", "label",
 							Item.ANY);
 					// if there is dc.rights.label delete
 					if (dcvs != null && dcvs.length > 0) {
 						StringBuilder labels = new StringBuilder();
-						for (DCValue label : dcvs) {
+						for (Metadatum label : dcvs) {
 							labels.append(label.value + " ");
 						}
 						String message = String

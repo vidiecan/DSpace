@@ -26,7 +26,7 @@ import org.dspace.app.util.DCInputSet;
 import org.dspace.app.util.DCInputsReader;
 import org.dspace.app.util.DCInputsReaderException;
 import org.dspace.content.Collection;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
@@ -142,7 +142,7 @@ public class RequiredMetadata extends AbstractCurationTask
                 	colhandle = item.getOwningCollection().getHandle();
                 	checkExtra = checkExtraIds.contains(Integer.toString(item.getOwningCollection().getID()));
                 }
-                DCValue[] itemTypeDCV = item.getMetadata("dc", "type", null, Item.ANY);
+                Metadatum[] itemTypeDCV = item.getMetadata("dc", "type", null, Item.ANY);
                 String itemType = null;
                 if(itemTypeDCV != null && itemTypeDCV.length >0){
                 	itemType = itemTypeDCV[0].value;
@@ -171,11 +171,11 @@ public class RequiredMetadata extends AbstractCurationTask
                     }
                     
                     if (!mdPatFound) {
-                        DCValue[] vals = item.getMetadata(req);
+                        Metadatum[] vals = item.getMetadata(req);
                         if ((itemType == null || input.isAllowedFor(itemType)) && vals.length == 0)
                         {
                         	if (mdEquivalenceMap.containsKey(req)) {
-                        		DCValue[] valsAlt = item.getMetadata(mdEquivalenceMap.get(req));
+                        		Metadatum[] valsAlt = item.getMetadata(mdEquivalenceMap.get(req));
                         		if (valsAlt == null || valsAlt.length == 0) {
                                 	sb.append(" missing required field: ").append(req);
                                     count++;                    			

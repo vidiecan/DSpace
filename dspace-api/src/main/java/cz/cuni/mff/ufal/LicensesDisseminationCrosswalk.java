@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.crosswalk.CrosswalkException;
@@ -65,7 +65,7 @@ public class LicensesDisseminationCrosswalk implements DisseminationCrosswalk {
         
         Item item = (Item)dso;
         
-        DCValue[] dcValue = item.getMetadata("dc", "rights", "uri", Item.ANY);
+        Metadatum[] dcValue = item.getMetadata("dc", "rights", "uri", Item.ANY);
         String licenseURI = "";
         
         

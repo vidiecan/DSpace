@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.crosswalk.CrosswalkException;
@@ -71,8 +71,8 @@ public class ORELicenseIngestionCrosswalk implements IngestionCrosswalk{
         	return;
         }
        
-        DCValue[] dc_rights = item.getMetadata("dc", "rights", null, Item.ANY);
-        DCValue[] dc_rights_uri = item.getMetadata("dc", "rights", "uri", Item.ANY);
+        Metadatum[] dc_rights = item.getMetadata("dc", "rights", null, Item.ANY);
+        Metadatum[] dc_rights_uri = item.getMetadata("dc", "rights", "uri", Item.ANY);
         
         String licenseName = null;
         String licenseURI = null;

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import org.apache.log4j.Logger;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataSchema;
@@ -31,12 +31,12 @@ public class UpdateDcDescriptionUri extends AbstractCurationTask {
 		if (dso instanceof Item) {
 			try {
 				Item item = (Item) dso;
-				DCValue[] vals = item.getMetadata("dc.source.uri");
+				Metadatum[] vals = item.getMetadata("dc.source.uri");
 
 				HashSet<String> sourceUris = new HashSet<String>();
 
 				if (vals != null && vals.length > 0) {
-					for (DCValue val : vals) {
+					for (Metadatum val : vals) {
 						sourceUris.add(val.value);
 					}
 				}
@@ -45,7 +45,7 @@ public class UpdateDcDescriptionUri extends AbstractCurationTask {
 				if (null != vals && vals.length > 0) {
 					if (sourceUris.size() > 0) {
 						// if we already have some source uri
-						for (DCValue val : vals) {
+						for (Metadatum val : vals) {
 							// and there's different description.uri
 							if (!sourceUris.contains(val.value)) {
 								throw new Exception(
@@ -57,7 +57,7 @@ public class UpdateDcDescriptionUri extends AbstractCurationTask {
 							}
 						}
 					} else {
-						for (DCValue val : vals) {
+						for (Metadatum val : vals) {
 							item.addMetadata(MetadataSchema.DC_SCHEMA,
 									"source", "uri", val.language, val.value);
 						}

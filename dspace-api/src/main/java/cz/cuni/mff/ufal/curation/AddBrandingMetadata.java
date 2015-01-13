@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.dspace.content.Community;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.curate.AbstractCurationTask;
@@ -35,7 +35,7 @@ public class AddBrandingMetadata extends AbstractCurationTask {
 	            if ( c!=null && c.length>0) {
 	            	String cName = c[0].getName();
 
-					DCValue[] oldLocalBrandings = item.getMetadata("local", "branding", null, Item.ANY);
+					Metadatum[] oldLocalBrandings = item.getMetadata("local", "branding", null, Item.ANY);
 					String oldCName = ( 1 == oldLocalBrandings.length ) ? oldLocalBrandings[0].value : "";
 					if ( !cName.equals(oldCName) ) {
 						String oldBranding = oldCName;

@@ -4,7 +4,7 @@ package cz.cuni.mff.ufal.curation;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.curate.AbstractCurationTask;
@@ -39,7 +39,7 @@ public class AddLabelMetadata extends AbstractCurationTask {
 	            utilities.openSession();
 	            LicenseDefinition license = null;
 	            
-	            DCValue[] rights = item.getMetadata("dc", "rights", "uri", Item.ANY);
+	            Metadatum[] rights = item.getMetadata("dc", "rights", "uri", Item.ANY);
 	            if(rights != null && rights.length>0) {
 	            	String licenseDefinition = rights[0].value;            	            
 	            	license = utilities.getLicenseByDefinition(licenseDefinition);            
