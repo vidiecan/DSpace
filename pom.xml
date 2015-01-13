@@ -473,6 +473,20 @@
         </profile>
 
         <!--
+           Builds UFAL Utilities
+        -->
+        <profile>
+            <id>utilities</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>utilities</module>
+            </modules>
+        </profile>
+	
+
+        <!--
              Builds RDF API and Data Provider WAR for DSpace
         -->
         <profile>
@@ -632,6 +646,12 @@
    -->
    <dependencyManagement>
       <dependencies>
+         <dependency>
+            <groupId>cz.cuni.mff.ufal.lindat</groupId>
+            <artifactId>utilities</artifactId>
+            <version>5.0-rc4-SNAPSHOT</version>
+         </dependency>
+
          <!-- DSpace core and endorsed Addons -->
          <dependency>
             <groupId>org.dspace</groupId>

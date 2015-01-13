@@ -93,6 +93,11 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>cz.cuni.mff.ufal.lindat</groupId>
+            <artifactId>utilities</artifactId>
+        </dependency>
+            
 
         <dependency>
             <groupId>org.dspace</groupId>
