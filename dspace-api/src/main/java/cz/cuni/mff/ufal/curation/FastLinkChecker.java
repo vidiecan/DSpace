@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
-import org.dspace.ctask.general.BasicLinkChecker;
+import cz.cuni.mff.ufal.curation.LinkChecker;
 
-public class FastLinkChecker extends BasicLinkChecker
+public class FastLinkChecker extends LinkChecker
 {
 
     private static final int MAX_ERRORS = 10;    

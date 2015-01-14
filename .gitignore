@@ -32,3 +32,6 @@ META-INF/
 
 #vim
 *~
+
+#.bak files
+*.bak

@@ -163,7 +163,7 @@ class SendEmailAction implements Action {
 					  .append("&");
 		}
 
-		Email email2User = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(locale, "download_link"));
+		Email email2User = Email.getEmail(I18nUtil.getEmailFilename(locale, "download_link"));
         email2User.addRecipient(eperson.getEmail());
         if(extraMetadata.containsKey(ExtraLicenseField.EXTRA_EMAIL.toString())) {
         	String exEmail = extraMetadata.get(ExtraLicenseField.EXTRA_EMAIL.toString());
@@ -182,7 +182,7 @@ class SendEmailAction implements Action {
 			email2User.addArgument(license.getDefinition());
 		}		
 		
-    	Email email2Admin = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(locale, "download_link_admin"));        
+    	Email email2Admin = Email.getEmail(I18nUtil.getEmailFilename(locale, "download_link_admin"));        
         String ccAdmin = ConfigurationManager.getProperty("lr", "lr.download.email.cc");
         if(ccAdmin != null && !ccAdmin.isEmpty()){
         	email2Admin.addRecipient(ccAdmin);

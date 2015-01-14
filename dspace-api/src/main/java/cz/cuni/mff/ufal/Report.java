@@ -260,7 +260,7 @@ public class Report {
                     String email_path = dspace_dir.endsWith("/") ? dspace_dir : dspace_dir + "/";
                     email_path += Report.EMAIL_PATH;
                     System.out.println(String.format("Looking for email template at [%s]", email_path));
-                    Email email = ConfigurationManager.getEmail(email_path);
+                    Email email = Email.getEmail(email_path);
                     email.addRecipient(to);
                     email.addArgument( r.toString() );
                     email.send();
@@ -576,7 +576,7 @@ class report_item_embargo implements simple_report
                 String handle = item.getHandle();
                 DCDate date = null;
                 try {
-                    date = EmbargoManager.getEmbargoDate(context, item);
+                    date = EmbargoManager.getEmbargoTermsAsDate(context, item);
                 } catch (Exception e) {
                 }
                 ret += String.format( "%s embargoed till [%s]\n",

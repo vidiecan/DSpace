@@ -452,7 +452,7 @@ public class DSpaceApi {
                 .append("token=").append(token)
                 .toString();
         Locale locale = context.getCurrentLocale();
-        Email bean = ConfigurationManager.getEmail(I18nUtil.getEmailFilename(locale, "register"));
+        Email bean = Email.getEmail(I18nUtil.getEmailFilename(locale, "register"));
         bean.addRecipient(email);
         bean.addArgument(specialLink);
         bean.send();

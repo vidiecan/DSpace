@@ -9,13 +9,13 @@ import org.apache.log4j.Logger;
 import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
-import org.dspace.ctask.general.BasicLinkChecker;
+import cz.cuni.mff.ufal.curation.LinkChecker;
 import org.dspace.curate.Curator;
 
 import cz.cuni.mff.ufal.DSpaceApi;
 
 @SuppressWarnings("deprecation")
-public class ItemHandleChecker extends BasicLinkChecker
+public class ItemHandleChecker extends LinkChecker
 {
 
     // The log4j logger for this class
