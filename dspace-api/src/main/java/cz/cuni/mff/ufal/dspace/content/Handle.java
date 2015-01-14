@@ -418,5 +418,11 @@ public class Handle extends DSpaceObject
 	public boolean isInternalResource() {		
 		return (getURL() == null || getURL().isEmpty());
 	}
+
+	@Override
+	public void updateLastModified() {
+		// TODO Auto-generated method stub
+		
+	}
 			
 }
