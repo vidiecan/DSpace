@@ -1143,6 +1143,11 @@ public class Item extends DSpaceObject
         }
     }
 
+    // if we update dc scheme during the life of Item (e.g., harvesting) we need
+    // to reset this field
+    public void reset_metadata_fields() {
+        allMetadataFields = null;
+    }
 
     /**
      * Withdraw the item from the archive. It is kept in place, and the content
