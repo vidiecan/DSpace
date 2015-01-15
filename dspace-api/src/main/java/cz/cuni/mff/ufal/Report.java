@@ -875,7 +875,19 @@ class report_checksum implements simple_report
         md5_collector collector = new md5_collector();
         checker.setCollector(collector);
         checker.setReportVerbose(true);
-        checker.process();
+        Context context = null;
+		try {
+			context = new Context();
+            checker.process(context);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			if(context != null){
+                context.abort();
+			}
+		}
+        
 
         if ( collector.arr.size() > 0 )
         {
