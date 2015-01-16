@@ -7,14 +7,16 @@
  */
 package cz.cuni.mff.ufal.statistics;
 
-import org.apache.log4j.Logger;
-import org.dspace.core.ConfigurationManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.statistics.util.IPTable;
 
 /* Created for LINDAT/CLARIN */
 /**
