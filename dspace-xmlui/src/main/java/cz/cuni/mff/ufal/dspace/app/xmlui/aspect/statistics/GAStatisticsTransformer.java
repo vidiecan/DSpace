@@ -12,18 +12,23 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.cocoon.environment.ObjectModelHelper;
-import org.apache.cocoon.environment.Request;
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.cocoon.AbstractDSpaceTransformer;
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.utils.UIException;
-import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.Message;
-import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.app.xmlui.wing.WingException;
+import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.Cell;
+import org.dspace.app.xmlui.wing.element.Division;
+import org.dspace.app.xmlui.wing.element.PageMeta;
+import org.dspace.app.xmlui.wing.element.Row;
+import org.dspace.app.xmlui.wing.element.Table;
+import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
@@ -284,7 +289,7 @@ public class GAStatisticsTransformer extends AbstractDSpaceTransformer {
 			return new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT)
 		            .setJsonFactory(JSON_FACTORY)
 		            .setServiceAccountId(account_email)
-		            .setServiceAccountScopes(AnalyticsScopes.ANALYTICS_READONLY)
+		            .setServiceAccountScopes(Collections.singleton(AnalyticsScopes.ANALYTICS_READONLY))
 		            .setServiceAccountPrivateKeyFromP12File(key)
 		            .build();
 	  }	
