@@ -1,5 +1,5 @@
 /* Created for LINDAT/CLARIN */
-package org.dspace.app.xmlui.aspect.administrative;
+package cz.cuni.mff.ufal.dspace.app.xmlui.aspect.administrative;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.service.ServiceException;

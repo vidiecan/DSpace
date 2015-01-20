@@ -9,7 +9,6 @@ import java.util.Scanner;
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
 import org.apache.log4j.Logger;
-import org.dspace.app.xmlui.aspect.administrative.AbstractControlPanelTab;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.Item;

@@ -4,7 +4,6 @@ package cz.cuni.mff.ufal.dspace.app.xmlui.aspect.administrative;
 import java.sql.SQLException;
 import java.util.Map;
 
-import org.dspace.app.xmlui.aspect.administrative.AbstractControlPanelTab;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.Row;

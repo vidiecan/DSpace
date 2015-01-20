@@ -10,13 +10,13 @@ import java.util.Map;
 
 import org.apache.cocoon.environment.ObjectModelHelper;
 import org.apache.cocoon.environment.Request;
-import org.dspace.app.xmlui.aspect.administrative.AbstractControlPanelTab;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.core.ConfigurationManager;
 
 import cz.cuni.mff.ufal.checks.ImportantLogs;
 import cz.cuni.mff.ufal.dspace.IOUtils;
+import cz.cuni.mff.ufal.dspace.app.xmlui.aspect.administrative.AbstractControlPanelTab;
 import cz.cuni.mff.ufal.dspace.app.xmlui.aspect.administrative.HtmlHelper;
 
 /**
