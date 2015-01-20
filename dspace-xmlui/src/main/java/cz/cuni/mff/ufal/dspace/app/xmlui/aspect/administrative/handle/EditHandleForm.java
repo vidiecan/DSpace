@@ -25,7 +25,10 @@ import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.PageMeta;
 import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.core.Constants;
-import org.springframework.util.StringUtils;
+//Can't use isEmpty in spring 3.1.1
+//import org.springframework.util.StringUtils;
+//use apache.commons instead
+import org.apache.commons.lang3.StringUtils;
 
 import cz.cuni.mff.ufal.dspace.content.Handle;
 

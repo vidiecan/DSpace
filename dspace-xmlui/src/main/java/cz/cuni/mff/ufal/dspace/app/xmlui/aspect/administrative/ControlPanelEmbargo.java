@@ -56,7 +56,7 @@ public class ControlPanelEmbargo extends AbstractControlPanelTab {
 					item.getName() );
 				DCDate date = null;
 				try {
-					date = EmbargoManager.getEmbargoDate(context, item);
+					date = EmbargoManager.getEmbargoTermsAsDate(context, item);
 				} catch (Exception e) {
 				}
 				wsrow.addCell().addContent( date != null ? date.toString() : "null" );

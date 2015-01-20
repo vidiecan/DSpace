@@ -86,7 +86,7 @@ public class UpdateEmbargoForm extends AbstractDSpaceTransformer {
 		Text t = form.addItem().addText("embargo_date");
 		DCDate date = null;
 		try {
-			date = EmbargoManager.getEmbargoDate(context, item);
+			date = EmbargoManager.getEmbargoTermsAsDate(context, item);
 		} catch (Exception e) {
 			main.addPara(e.toString(), "alert alert-error");
 			t.setDisabled();
