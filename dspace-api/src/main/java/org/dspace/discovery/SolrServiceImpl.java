@@ -109,9 +109,12 @@ import org.springframework.stereotype.Service;
  *
  * Its configuration is Autowired by the ApplicationContext
  *
- * @author Kevin Van de Velde (kevin at atmire dot com)
- * @author Mark Diggory (markd at atmire dot com)
- * @author Ben Bosman (ben at atmire dot com)
+ * based on class by:
+ * Kevin Van de Velde (kevin at atmire dot com)
+ * Mark Diggory (markd at atmire dot com)
+ * Ben Bosman (ben at atmire dot com)
+ *
+ * modified for LINDAT/CLARIN
  */
 @Service
 public class SolrServiceImpl implements SearchService, IndexingService {
@@ -1151,8 +1154,31 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                         }
 
                         //Add a dynamic fields for auto complete in search
-                        doc.addField(searchFilter.getIndexFieldName() + "_ac",
-                                value.toLowerCase() + separator + value);
+                        if (searchFilter.isFullAutoComplete())
+                        {
+                            doc.addField(searchFilter.getIndexFieldName()
+                                    + "_ac", value.toLowerCase() + separator
+                                    + value);
+                        }
+                        else
+                        {
+                            //Should this use a solr tokenizer and/or different dynamic field?
+                            String[] values = value.split(" ");
+                            for (String val : values)
+                            {
+                                val = val.replaceAll("[\\W]", "");
+                                if (val.isEmpty())
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    doc.addField(
+                                            searchFilter.getIndexFieldName()
+                                                    + "_ac", val);
+                                }
+                            }
+                        }
                         if (preferedLabel != null)
                         {
                             doc.addField(searchFilter.getIndexFieldName()
@@ -1256,7 +1282,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                                         doc.addField(searchFilter.getIndexFieldName() + "_keyword", indexValue);
                                     }
                                 }
-                            }
+                            } 
                         }
                     }
                 }
