@@ -11,7 +11,7 @@ import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.Row;
 import org.dspace.app.xmlui.wing.element.Table;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.content.MetadataField;
@@ -146,8 +146,8 @@ public class ControlPanelMetadata extends AbstractControlPanelTab {
 						
 						Item item = item_iter.next();
 						String handle = item.getHandle();
-                        DCValue[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
-                        for ( DCValue dcval : values ) {
+                        Metadatum[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
+                        for ( Metadatum dcval : values ) {
                             // if only specific values should be shown
                             if ( show_only_if_value != null ) 
                             {

@@ -21,7 +21,7 @@ import org.dspace.app.xmlui.wing.element.Row;
 import org.dspace.app.xmlui.wing.element.Table;
 import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.content.Bitstream;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 
@@ -123,7 +123,7 @@ public class UFALLicenceAgreement extends AbstractDSpaceTransformer {
 
 				// this is probably not enough
 				Item item = (Item)dso;
-				DCValue[] lic = item.getMetadata("dc", "rights", "uri", Item.ANY);
+				Metadatum[] lic = item.getMetadata("dc", "rights", "uri", Item.ANY);
 				String licURL = lic[0].value;
 
 				LicenseDefinition license = functionalityManager.getLicenseByDefinition(licURL);

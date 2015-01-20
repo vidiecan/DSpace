@@ -22,7 +22,7 @@ import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Bundle;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
@@ -107,7 +107,7 @@ public class EditItemLicenseForm extends AbstractDSpaceTransformer {
 			List editLicenseForm = main.addList("currentLicense", List.TYPE_FORM, "well well-light");
 			editLicenseForm.setHead(T_head1);
 			
-			DCValue[] dc_rights_uri = item.getMetadata("dc", "rights", "uri", Item.ANY);
+			Metadatum[] dc_rights_uri = item.getMetadata("dc", "rights", "uri", Item.ANY);
 			
 			//String licenseName = null;
 			String licenseURI = null;

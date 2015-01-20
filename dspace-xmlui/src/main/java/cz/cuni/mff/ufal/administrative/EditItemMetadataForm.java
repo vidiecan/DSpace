@@ -40,7 +40,7 @@ import org.dspace.app.xmlui.wing.element.Text;
 import org.dspace.app.xmlui.wing.element.TextArea;
 import org.dspace.app.xmlui.wing.element.Value;
 import org.dspace.content.Collection;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
@@ -112,8 +112,8 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
                 // Get our parameters and state
                 int itemID = parameters.getParameterAsInteger("itemID",-1);
                 Item item = Item.find(context, itemID);
-                DCValue[] values = filterValues(item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY));
-                Arrays.sort(values, new DCValueComparator());
+                Metadatum[] values = filterValues(item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY));
+                Arrays.sort(values, new MetadatumComparator());
                 String baseURL = contextPath+"/edit/item?eperson-continue="+knot.getId();
 
                 Request request = ObjectModelHelper.getRequest(objectModel);
@@ -219,7 +219,7 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
                 header.addCell().addContent(T_column4);
 
                 ChoiceAuthorityManager cmgr = ChoiceAuthorityManager.getManager();
-                for(DCValue value : values)
+                for(Metadatum value : values)
                 {
                         String name = value.schema + "_" + value.element;
                         if (value.qualifier != null)
@@ -302,9 +302,9 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
 
 
 
-        public static DCValue[] filterValues(DCValue[] dcvs){
-        	ArrayList<DCValue> filtered = new ArrayList<DCValue>();
-        	for(DCValue dcv:dcvs){
+        public static Metadatum[] filterValues(Metadatum[] dcvs){
+        	ArrayList<Metadatum> filtered = new ArrayList<Metadatum>();
+        	for(Metadatum dcv:dcvs){
                         String name = dcv.schema +"."+dcv.element;
                         if (dcv.qualifier != null)
                         {
@@ -314,7 +314,7 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
                         	filtered.add(dcv);
                         }
         	}
-        	return filtered.toArray(new DCValue[filtered.size()]);
+        	return filtered.toArray(new Metadatum[filtered.size()]);
         }
         
 	public static boolean allowedField(String name) {
@@ -346,10 +346,10 @@ public class EditItemMetadataForm extends AbstractDSpaceTransformer {
         /**
          * Compare two metadata element's name so that they may be sorted.
          */
-       public static class DCValueComparator implements Comparator, Serializable {
+       public static class MetadatumComparator implements Comparator, Serializable {
                 public int compare(Object arg0, Object arg1) {
-                        final DCValue o1 = (DCValue)arg0;
-                        final DCValue o2 = (DCValue)arg1;
+                        final Metadatum o1 = (Metadatum)arg0;
+                        final Metadatum o2 = (Metadatum)arg1;
                         final String s1 = o1.schema + o1.element + (o1.qualifier==null?"":("." + o1.qualifier));
                         final  String s2 = o2.schema + o2.element + (o2.qualifier==null?"":("." + o2.qualifier));
                         return s1.compareTo(s2);

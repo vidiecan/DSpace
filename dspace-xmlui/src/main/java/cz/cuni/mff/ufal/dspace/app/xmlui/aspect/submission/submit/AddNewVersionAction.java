@@ -22,7 +22,7 @@ import org.apache.cocoon.environment.SourceResolver;
 import org.apache.cocoon.environment.http.HttpEnvironment;
 import org.dspace.app.xmlui.utils.ContextUtil;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.core.Context;
@@ -108,7 +108,7 @@ public class AddNewVersionAction extends AbstractAction
         Item item = workspaceItem.getItem();
         
         // add distinguishing mark (date) to the title
-        DCValue[] md = item.getMetadata("dc", "title", Item.ANY, Item.ANY);
+        Metadatum[] md = item.getMetadata("dc", "title", Item.ANY, Item.ANY);
         item.clearMetadata("dc", "title", Item.ANY, Item.ANY);
         for (int n = 0; n < md.length; n++)
         {                  

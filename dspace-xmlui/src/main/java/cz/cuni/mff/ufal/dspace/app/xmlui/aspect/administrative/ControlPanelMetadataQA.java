@@ -25,7 +25,7 @@ import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.app.xmlui.wing.element.Select;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.content.MetadataField;
@@ -178,9 +178,9 @@ public class ControlPanelMetadataQA extends AbstractControlPanelTab {
                             ConfigurationManager.getProperty("handle.canonical.prefix"),
                             item.getHandle()), item.getHandle(), "label label-important");
             
-            DCValue[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
+            Metadatum[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
             Set<String> done = new HashSet<String>();
-            for ( DCValue dc : values ) 
+            for ( Metadatum dc : values ) 
             {
                 String value = dc.value;
                     // should not happen
@@ -203,7 +203,7 @@ public class ControlPanelMetadataQA extends AbstractControlPanelTab {
                 done.add(value);
             }
             
-            for ( DCValue dc : values ) {
+            for ( Metadatum dc : values ) {
                 row.addHighlight("badge badge-info").addContent(dc.value);
             }
         }
@@ -240,8 +240,8 @@ public class ControlPanelMetadataQA extends AbstractControlPanelTab {
         {
             item = itr.next();
             boolean changed = false;
-            DCValue[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
-            for ( DCValue dc : values ) {
+            Metadatum[] values = item.getMetadata(schema, element, qualifier, Item.ANY);
+            for ( Metadatum dc : values ) {
                 if ( dc.value.equals(old_val) ) {
                     // change it
                     dc.value = new_val;
@@ -254,7 +254,7 @@ public class ControlPanelMetadataQA extends AbstractControlPanelTab {
             // update the metadata properly - first clear, than add
             if ( changed ) {
                 item.clearMetadata(schema, element, qualifier, Item.ANY);
-                for ( DCValue dc : values ) {
+                for ( Metadatum dc : values ) {
                     item.addMetadata(schema, element, qualifier, dc.language, dc.value);
                 }
                 item.store_provenance_info("Item was updated in CP MetadataQA", context.getCurrentUser());
