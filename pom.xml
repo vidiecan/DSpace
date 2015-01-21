@@ -506,6 +506,7 @@
             </activation>
             <modules>
                 <module>dspace-api</module>
+		<module>utilities</module>
             </modules>
         </profile>
 
@@ -682,6 +683,7 @@
                 </file>
             </activation>
             <modules>
+		<module>lr-b2safe-dspace</module>
                 <module>dspace-xmlui</module>
             </modules>
         </profile>
@@ -830,6 +832,11 @@
             <version>5.1-SNAPSHOT</version>
             <type>war</type>
          </dependency>
+	 <dependency>
+	  	<groupId>cz.cuni.mff.ufal.dspace</groupId>
+	  	<artifactId>b2safe-dspace</artifactId>
+		<version>${project.version}</version>
+	 </dependency>
          <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-xmlui</artifactId>
@@ -1321,11 +1328,6 @@
               <version>3.0.0</version>
               <scope>provided</scope>
           </dependency>
-	  <dependency>
-	  	<groupId>cz.cuni.mff.ufal.dspace</groupId>
-	  	<artifactId>b2safe-dspace</artifactId>
-	  	<version>${project.version}</version>
-	</dependency>
       </dependencies>
    </dependencyManagement>
 

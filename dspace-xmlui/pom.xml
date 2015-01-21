@@ -97,6 +97,10 @@
             <groupId>cz.cuni.mff.ufal.lindat</groupId>
             <artifactId>utilities</artifactId>
         </dependency>
+	 <dependency>
+	  	<groupId>cz.cuni.mff.ufal.dspace</groupId>
+	  	<artifactId>b2safe-dspace</artifactId>
+	 </dependency>
             
 
         <dependency>

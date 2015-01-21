@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.DCValue;
+import org.dspace.content.Metadatum;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
@@ -189,7 +189,7 @@ public class ReplicationManager {
 			// embargoes
 			String embargoLiftField = ConfigurationManager.getProperty("embargo.field.lift");
 			if(embargoLiftField!=null && !embargoLiftField.isEmpty()) {
-				DCValue[] mdEmbargo = item.getMetadata(embargoLiftField);
+				Metadatum[] mdEmbargo = item.getMetadataByMetadataString(embargoLiftField);
 				if(mdEmbargo!=null && mdEmbargo.length>0) {
 					return false;
 				}				
@@ -216,9 +216,9 @@ public class ReplicationManager {
 	}
 
 	private static boolean isPublic(Item i) {
-		DCValue[] pub_dc = i.getDC("rights", "label", Item.ANY);
+		Metadatum[] pub_dc = i.getMetadata("dc", "rights", "label", Item.ANY);
 		if (pub_dc.length > 0) {
-			for (DCValue dc : pub_dc) {
+			for (Metadatum dc : pub_dc) {
 				if (dc.value.equals("PUB")) {
 					return true;
 				}
@@ -434,7 +434,7 @@ class ReplicationThread implements Runnable {
 			}
 
 			// replicate
-			DCValue[] mdURI = item.getMetadata("dc.identifier.uri");
+			Metadatum[] mdURI = item.getMetadataByMetadataString("dc.identifier.uri");
 			if(mdURI==null || mdURI.length<=0) {
 				throw new RuntimeException("dc.identifier.uri is missing for item " + item.getHandle());
 			}
