@@ -566,6 +566,19 @@
                 <module>utilities</module>
             </modules>
         </profile>
+
+        <!--
+           Builds lr-b2safe-dspace
+        -->
+	<profile>
+	  <id>lr-b2safe-dspace</id>
+	  <activation>
+	    <activeByDefault>true</activeByDefault>
+	  </activation>
+	  <modules>
+	    <module>lr-b2safe-dspace</module>
+	  </modules>
+	</profile>
 	
 
         <!--
@@ -714,6 +727,7 @@
              <module>dspace-swordv2</module>
              <module>dspace-xmlui-mirage2</module>
              <module>dspace-xmlui</module>
+	     <module>lr-b2safe-dspace</module>
          </modules>
       </profile>
 
@@ -1307,6 +1321,11 @@
               <version>3.0.0</version>
               <scope>provided</scope>
           </dependency>
+	  <dependency>
+	  	<groupId>cz.cuni.mff.ufal.dspace</groupId>
+	  	<artifactId>b2safe-dspace</artifactId>
+	  	<version>${project.version}</version>
+	</dependency>
       </dependencies>
    </dependencyManagement>
 
