@@ -55,7 +55,7 @@ public class ControlPanelJavaTab extends AbstractControlPanelTab {
         list.addLabel(T_JAVA_VERSION);
         list.addItem(System.getProperty("java.version"));
         list.addLabel(T_JAVA_VENDOR);
-        list.addItem(System.getProperty("java.vendor"));
+        list.addItem(System.getProperty("java.vm.name"));
         list.addLabel(T_OS_NAME);
         list.addItem(System.getProperty("os.name"));
         list.addLabel(T_OS_ARCH);
