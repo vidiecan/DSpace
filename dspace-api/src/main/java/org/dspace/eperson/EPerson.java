@@ -294,8 +294,18 @@ public class EPerson extends DSpaceObject
      *            Maximum number of matches returned
      * 
      * @return array of EPerson objects
+     * @throws SQLException 
      */
-    public static EPerson[] search(Context context, String query, int offset, int limit) 
+    public static EPerson[] search(Context context, String query, int offset, int limit) throws SQLException{
+        //XXX depends on the query in search(Context, String, int, int, String)
+        if(DatabaseManager.isOracle()) {
+            return search(context, query, offset, limit, " dbms_lob.substr(ln.text_value), dbms_lob.substr(fn.text_value) ASC");
+        }else{
+            return search(context, query, offset, limit, " ln.text_value, fn.text_value ASC");
+        }
+    }
+    
+    public static EPerson[] search(Context context, String query, int offset, int limit, String order_by) 
     		throws SQLException
 	{
 		String params = "%"+query.toLowerCase()+"%";
@@ -306,11 +316,7 @@ public class EPerson extends DSpaceObject
                 " WHERE e.eperson_id = ? OR " +
                 "LOWER(fn.text_value) LIKE LOWER(?) OR LOWER(ln.text_value) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?) ORDER BY  ");
 
-        if(DatabaseManager.isOracle()) {
-            queryBuf.append(" dbms_lob.substr(ln.text_value), dbms_lob.substr(fn.text_value) ASC");
-        }else{
-            queryBuf.append(" ln.text_value, fn.text_value ASC");
-        }
+        queryBuf.append(order_by);
 
         // Add offset and limit restrictions - Oracle requires special code
         if (DatabaseManager.isOracle())

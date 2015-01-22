@@ -87,7 +87,7 @@ public class EmbargoManager
 		setEmbargo(context, item, myLift);
 	}
 
-    private static void setEmbargo(Context context, Item item, DCDate myLift)
+    public static void setEmbargo(Context context, Item item, DCDate myLift)
         throws SQLException, AuthorizeException, IOException
     {
         init();
