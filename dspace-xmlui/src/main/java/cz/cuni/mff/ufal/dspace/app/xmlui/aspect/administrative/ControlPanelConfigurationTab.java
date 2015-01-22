@@ -31,6 +31,16 @@ public class ControlPanelConfigurationTab extends AbstractControlPanelTab {
 	private static final Message T_FEEDBACK_RECIPIENT = message("xmlui.administrative.ControlPanel.mail_feedback_recipient");
 	private static final Message T_MAIL_ADMIN = message("xmlui.administrative.ControlPanel.mail_admin");
 
+	private static final String T_UNSET = "UNSET";
+
+    /**
+     * Guarantee a non-null String.
+     *
+     * @param value candidate string.
+     * @return {@code value} or a constant indicating an unset value.
+     */
+    private static String notnull(String value) { return null == value ? T_UNSET : value; }
+
 	@Override
 	public void addBody(Map objectModel, Division div) throws WingException {
 		// LIST: DSpace
@@ -41,23 +51,23 @@ public class ControlPanelConfigurationTab extends AbstractControlPanelTab {
 		dspace.addItem(Util.getSourceVersion());
 
 		dspace.addLabel(T_DSPACE_DIR);
-		dspace.addItem(ConfigurationManager.getProperty("dspace.dir"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("dspace.dir")));
 
 		dspace.addLabel(T_DSPACE_URL);
-		String base_url = ConfigurationManager.getProperty("dspace.url");
+		String base_url = notnull(ConfigurationManager.getProperty("dspace.url"));
 		dspace.addItemXref(base_url, base_url);
 
 		dspace.addLabel(T_DSPACE_HOST_NAME);
-		dspace.addItem(ConfigurationManager.getProperty("dspace.hostname"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("dspace.hostname")));
 
 		dspace.addLabel(T_DSPACE_NAME);
-		dspace.addItem(ConfigurationManager.getProperty("dspace.name"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("dspace.name")));
 
 		dspace.addLabel(T_DB_NAME);
-		dspace.addItem(ConfigurationManager.getProperty("db.name"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.name")));
 
 		dspace.addLabel(T_DB_URL);
-		dspace.addItem(ConfigurationManager.getProperty("db.url"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.url")));
 
 		// ufal
 		dspace.addLabel("License database URL");
@@ -70,49 +80,49 @@ public class ControlPanelConfigurationTab extends AbstractControlPanelTab {
 		// /ufal
 
 		dspace.addLabel(T_DB_DRIVER);
-		dspace.addItem(ConfigurationManager.getProperty("db.driver"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.driver")));
 
 		dspace.addLabel(T_DB_MAX_CONN);
-		dspace.addItem(ConfigurationManager.getProperty("db.maxconnections"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.maxconnections")));
 
 		dspace.addLabel(T_DB_MAX_WAIT);
-		dspace.addItem(ConfigurationManager.getProperty("db.maxwait"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.maxwait")));
 
 		dspace.addLabel(T_DB_MAX_IDLE);
-		dspace.addItem(ConfigurationManager.getProperty("db.maxidle"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("db.maxidle")));
 
 		dspace.addLabel(T_MAIL_SERVER);
-		dspace.addItem(ConfigurationManager.getProperty("mail.server"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("mail.server")));
 
 		dspace.addLabel(T_MAIL_FROM_ADDRESS);
-		dspace.addItem(ConfigurationManager.getProperty("mail.from.address"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("mail.from.address")));
 
 		dspace.addLabel(T_FEEDBACK_RECIPIENT);
-		dspace.addItem(ConfigurationManager.getProperty("feedback.recipient"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("feedback.recipient")));
 
 		dspace.addLabel(T_MAIL_ADMIN);
-		dspace.addItem(ConfigurationManager.getProperty("mail.admin"));
+		dspace.addItem(notnull(ConfigurationManager.getProperty("mail.admin")));
 
 		// ufal
 		dspace.addLabel("Site handle (e.g., used in curation)");
 		dspace.addItem(Site.getSiteHandle());
 
 		dspace.addLabel("OAI url");
-		String oai_url = ConfigurationManager.getProperty("lr", "lr.dspace.oai.url");
+		String oai_url = notnull(ConfigurationManager.getProperty("lr", "lr.dspace.oai.url"));
 		dspace.addItemXref(oai_url, oai_url);
 
 		dspace.addLabel("Solr log url");
-		String oai_solr = ConfigurationManager.getProperty("solr.log.server");
+		String oai_solr = notnull(ConfigurationManager.getProperty("solr.log.server"));
 		dspace.addItemXref(oai_solr, oai_solr);
 
 		List ufaladd = div.addList("UFAL_additional");
 		ufaladd.setHead("UFAL additional");
 
 		ufaladd.addLabel("Help mail");
-		ufaladd.addItem(ConfigurationManager.getProperty("lr.help.mail"));
+		ufaladd.addItem(notnull(ConfigurationManager.getProperty("lr.help.mail")));
 
 		ufaladd.addLabel("Assetstore");
-		ufaladd.addItem(ConfigurationManager.getProperty("assetstore.dir"));
+		ufaladd.addItem(notnull(ConfigurationManager.getProperty("assetstore.dir")));
 
 		ufaladd.addLabel("Postgresql logging dir (default)");
 		ufaladd.addItem("/var/log/postgresql");
