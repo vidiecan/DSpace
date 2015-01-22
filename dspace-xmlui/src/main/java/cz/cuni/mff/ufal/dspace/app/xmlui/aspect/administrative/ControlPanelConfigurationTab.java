@@ -2,6 +2,7 @@
 package cz.cuni.mff.ufal.dspace.app.xmlui.aspect.administrative;
 
 import java.util.Map;
+
 import org.dspace.app.util.Util;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
@@ -9,6 +10,7 @@ import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.List;
 import org.dspace.content.Site;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.storage.rdbms.DatabaseManager;
 
 import cz.cuni.mff.ufal.DSpaceApi;
 
@@ -64,7 +66,7 @@ public class ControlPanelConfigurationTab extends AbstractControlPanelTab {
 		dspace.addItem(notnull(ConfigurationManager.getProperty("dspace.name")));
 
 		dspace.addLabel(T_DB_NAME);
-		dspace.addItem(notnull(ConfigurationManager.getProperty("db.name")));
+		dspace.addItem(notnull(DatabaseManager.getDbName()));
 
 		dspace.addLabel(T_DB_URL);
 		dspace.addItem(notnull(ConfigurationManager.getProperty("db.url")));
