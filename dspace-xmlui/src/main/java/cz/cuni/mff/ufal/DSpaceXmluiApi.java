@@ -144,6 +144,7 @@ public class DSpaceXmluiApi {
 	 * 
 	 * @param division is actual paragraph where information is commited
 	 */
+    @Deprecated
 	public static void app_xmlui_aspect_artifactbrowser_ItemViewer(Logger log,
 			Context context, Item item, Division division) {
 
