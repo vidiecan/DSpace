@@ -69,6 +69,10 @@ public class DiscoveryUIUtils {
                 String filterType = filterTypes.get(i);
                 String filterOperator = filterOperators.get(i);
                 String filterValue = filterValues.get(i);
+                
+                if(StringUtils.isBlank(filterOperator)){
+                    filterOperator = "contains";
+                }
 
                 if(StringUtils.isNotBlank(filterValue)){
                     allFilterQueries.add(searchService.toFilterQuery(context, (filterType.equals("*") ? "" : filterType), filterOperator, filterValue).getFilterQuery());
