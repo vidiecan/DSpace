@@ -4,14 +4,18 @@
  * tree and available online at
  *
  * http://www.dspace.org/license/
+ * 
+ * modified for LINDAT/CLARIN
  */
 package org.dspace.app.xmlui.cocoon;
 
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
+
 import org.apache.avalon.framework.parameters.ParameterException;
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.cocoon.ProcessingException;
+import org.apache.cocoon.ResourceNotFoundException;
 import org.apache.cocoon.environment.*;
 import org.apache.cocoon.reading.ResourceReader;
 import org.apache.excalibur.source.Source;
@@ -42,6 +46,7 @@ import java.util.*;
  * @author Roel Van Reeth (roel at atmire dot com)
  * @author Art Lowel (art dot lowel at atmire dot com)
  * @author Ben Bosman (ben at atmire dot com)
+ * modified for LINDAT/CLARIN
  */
 
 public class ConcatenationReader extends ResourceReader {
@@ -69,8 +74,17 @@ public class ConcatenationReader extends ResourceReader {
 
         // setup list of sources, get relevant parts of path
         this.inputSources = new ArrayList<Source>();
-        String path = src.substring(0, src.lastIndexOf('/'));
-        String file = src.substring(src.lastIndexOf('/')+1);
+        
+        String path;
+        String file;
+        if(src.lastIndexOf('/') >= 0) {
+            path = src.substring(0, src.lastIndexOf('/'));
+            file = src.substring(src.lastIndexOf('/')+1);
+        }
+        else {
+            path = "";
+            file = src;
+        }        
 
         // now build own list of inputsources
         String[] files = file.split(",");
@@ -87,6 +101,21 @@ public class ConcatenationReader extends ResourceReader {
 
             String fullPath = path + "/" + f;
             this.inputSources.add(resolver.resolveURI(fullPath));
+        }
+
+        int index = 0;
+        for (Iterator<Source> it=this.inputSources.iterator(); it.hasNext();) {
+            Source source = it.next();
+            try
+            {
+                InputStream stream = source.getInputStream();
+            } catch (IOException e) {
+                String uri = null != source ? source.getURI() : "null";
+                log.error(String.format("IOException in ConcatenationReader.setup when retrieving InputStream [%s]" +
+                        " of a Source; index = %d, inputSources.size = %d; %s", uri, index, inputSources.size(), getRequestInfo(objectModel)));
+                throw new ResourceNotFoundException(uri);
+            }
+            index++;
         }
 
         // do super stuff
@@ -106,6 +135,34 @@ public class ConcatenationReader extends ResourceReader {
         } catch (ParameterException e) {
             log.error("ParameterException in setup when retrieving parameter requestQueryString", e);
         }
+    }
+
+    /**
+     * Returns information about the referrer (remote IP address and referrer)
+     * 
+     * @return Information about the referrer
+     */
+    private String getRequestInfo(Map objectModel)
+    {
+        String referrer = null;
+        String ipAddress = null;
+        String requestURI = null;
+
+        Request request = ObjectModelHelper.getRequest(objectModel);
+
+        if (request != null)
+        {
+            referrer = request.getHeader("Referer"); // Misspelled header name
+            ipAddress = request.getRemoteAddr();
+            requestURI = request.getRequestURI();
+        }
+        referrer = referrer != null ? referrer : "?";
+
+        String requestInfo = String.format(
+                "request URI = %s, remote address = %s, referrer = %s",
+                requestURI, ipAddress, referrer);
+
+        return requestInfo;
     }
 
     /**
@@ -262,13 +319,16 @@ public class ConcatenationReader extends ResourceReader {
         }
 
         public InputStream nextElement() {
+            Source src = null;
             try {
-                InputStream elem = inputSources.get(index).getInputStream();
+                src = inputSources.get(index);
+                InputStream elem = src.getInputStream();
                 index++;
                 return elem;
             } catch (IOException e) {
-                log.error("IOException in StreamEnumeration.nextElement when retrieving InputStream of a Source; index = "
-                        + index + ", inputSources.size = " + inputSources.size(), e);
+                String uri = null != src ? src.getURI() : "null";
+                log.error(String.format("IOException in StreamEnumeration.nextElement when retrieving InputStream [%s]" +
+                                        " of a Source; index = %d, inputSources.size = %d", uri, index, inputSources.size()));
                 return null;
             }
         }
