@@ -12,11 +12,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.dspace.app.util.DCInput;
+import org.dspace.app.util.DCInputsReader;
+import org.dspace.app.util.DCInputsReaderException;
 import org.dspace.content.*;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
@@ -47,6 +52,7 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
     
     private Map<String, String> _language_name_code_map;
     private Map<String, String> _code_language_name_map;
+    private Map<String, Integer> _complex_inputs;
     
     // The log4j logger for this class
     private static Logger log = Logger.getLogger(Curator.class);
@@ -66,6 +72,8 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
         _language_name_code_map = new HashMap<String, String>();
         _code_language_name_map = new HashMap<String, String>();
         loadLanguageCodeMap();        
+        _complex_inputs = new HashMap<String, Integer>();
+        loadComplexInputs();
     }
     
     private void loadLanguageCodeMap() {
@@ -96,6 +104,29 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             log.error( "problems fetching iso_langs.json", e );
 		} catch (IOException e) {
             log.error( "problems fetching iso_langs.json", e );
+		}
+	}
+
+	private void loadComplexInputs() {
+		try {
+			DCInputsReader reader = new DCInputsReader();
+			int numPages = reader.getNumberInputPages(null);
+			for (int i = 0; i < numPages; i++) {
+				for (DCInput input : reader.getInputs(null).getPageRows(i,
+						false, true)) {
+					if ("complex".equals(input.getInputType())) {
+						String name = StringUtils.isBlank(input.getQualifier()) ? String
+								.format("%s.%s", input.getSchema(),
+										input.getElement()) : String.format(
+								"%s.%s.%s", input.getSchema(),
+								input.getElement(), input.getQualifier());
+						_complex_inputs.put(name, input.getComplexDefinition()
+								.getInputNames().size());
+					}
+				}
+			}
+		} catch (DCInputsReaderException e) {
+			log.error("Problems fetching input-forms.xml");
 		}
 	}
 
@@ -150,6 +181,8 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
                         validate_rights_labels(item, dcs, results);
                         //
                         validate_highly_recommended_metadata(item, dcs, results);
+                        //
+                        validate_complex_inputs(item, dcs, results);
 
                         status = Curator.CURATE_SUCCESS;
                     }catch(CurateException exc) {
@@ -455,6 +488,24 @@ public class ItemMetadataQAChecker extends AbstractCurationTask {
             }
         }
     }
+    
+	private void validate_complex_inputs(Item item, Metadatum[] dcs,
+			StringBuilder results) throws CurateException {
+		for (Entry<String, Integer> entry : _complex_inputs.entrySet()) {
+
+			for (Metadatum dval : item.getMetadataByMetadataString(entry.getKey())) {
+				String val = dval.value;
+				if (val.split(DCInput.ComplexDefinition.SEPARATOR).length != entry
+						.getValue()) {
+					throw new CurateException(
+							String.format(
+									"%s is a componet with %s values but is not stored as such. [%s]",
+									entry.getKey(), entry.getValue(), val),
+							Curator.CURATE_FAIL);
+				}
+			}
+		}
+	}
 
 } // class ItemMetadataQAChecker
 

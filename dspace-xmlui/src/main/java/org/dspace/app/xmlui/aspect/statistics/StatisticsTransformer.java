@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -41,6 +43,7 @@ import org.dspace.statistics.content.DatasetTypeGenerator;
 import org.dspace.statistics.content.StatisticsDataVisits;
 import org.dspace.statistics.content.StatisticsListing;
 import org.dspace.statistics.content.StatisticsTable;
+import org.dspace.statistics.content.filter.StatisticsSolrDateFilter;
 import org.xml.sax.SAXException;
 /**
  * modified for LINDAT/CLARIN
@@ -134,34 +137,20 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
 		
 		Division home = body.addDivision("home", "primary repository");
 		Division division = home.addDivision("stats", "secondary stats");
-		division.setHead(T_head_title);
-        /*
+		division.setHead("Most Viewed Items");
 		try {
 
-			StatisticsTable statisticsTable = new StatisticsTable(
-					new StatisticsDataVisits());
+			/** List of the top 10 items for the entire repository Last week **/
 
-			statisticsTable.setTitle(T_head_visits_month);
-			statisticsTable.setId("tab1");
-
-			DatasetTimeGenerator timeAxis = new DatasetTimeGenerator();
-			timeAxis.setDateInterval("month", "-6", "+1");
-			statisticsTable.addDatasetGenerator(timeAxis);
-
-			addDisplayTable(division, statisticsTable);
-
-		} catch (Exception e) {
-			log.error("Error occurred while creating statistics for home page",
-					e);
-		}
-		*/
-		try {
-            /** List of the top 10 items for the entire repository **/
-			StatisticsListing statListing = new StatisticsListing(
-					new StatisticsDataVisits());
-
-			statListing.setTitle(T_head_visits_total);
-			statListing.setId("list1");
+			StatisticsListing statListing = new StatisticsListing(new StatisticsDataVisits());
+			
+			StatisticsSolrDateFilter dateFilter = new StatisticsSolrDateFilter();
+			Calendar cal = new GregorianCalendar();
+			dateFilter.setEndDate(cal.getTime());			
+			cal.add(Calendar.WEEK_OF_MONTH, -1);
+			dateFilter.setStartDate(cal.getTime());
+			statListing.addFilter(dateFilter);			
+			statListing.setTitle("Top Last Week");
 
             //Adding a new generator for our top 10 items without a name length delimiter
             DatasetDSpaceObjectGenerator dsoAxis = new DatasetDSpaceObjectGenerator();
@@ -169,7 +158,23 @@ public class StatisticsTransformer extends AbstractDSpaceTransformer {
             statListing.addDatasetGenerator(dsoAxis);
 
             //Render the list as a table
-			addDisplayListing(division, statListing);
+			addDisplayListing(division.addDivision("top-week"), statListing);
+
+            /** List of the top 10 items for the entire repository All Time **/
+			
+			StatisticsListing statListing2 = new StatisticsListing(new StatisticsDataVisits());				
+			statListing2.setTitle("Top All Times");
+
+            //Adding a new generator for our top 10 items without a name length delimiter
+            DatasetDSpaceObjectGenerator dsoAxis2 = new DatasetDSpaceObjectGenerator();
+            dsoAxis2.addDsoChild(Constants.ITEM, 10, false, -1);
+            statListing2.addDatasetGenerator(dsoAxis);            
+
+            //Render the list as a table
+			addDisplayListing(division.addDivision("top-all"), statListing2);
+			
+			
+			
 
 		} catch (Exception e) {
 			log.error("Error occurred while creating statistics for home page", e);
