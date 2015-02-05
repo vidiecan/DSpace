@@ -29,6 +29,7 @@ and searching the repository.
             <map:transformer name="FrontPageFeeds" src="org.dspace.app.xmlui.aspect.discovery.SiteViewer"/>
             <map:transformer name="SiteRecentSubmissions" src="org.dspace.app.xmlui.aspect.discovery.SiteRecentSubmissions"/>
             <map:transformer name="SidebarFacetsTransformer" src="org.dspace.app.xmlui.aspect.discovery.SidebarFacetsTransformer"/>
+            <map:transformer name="BrowseGlobal" src="cz.cuni.mff.ufal.dspace.app.xmlui.aspect.artifactbrowser.BrowseGlobal"/>
 
 
             <map:transformer name="CommunitySearch" src="org.dspace.app.xmlui.aspect.discovery.CommunitySearch"/>
@@ -114,8 +115,7 @@ and searching the repository.
 				<map:transform type="SidebarFacetsTransformer"/>
                 <map:transform type="SimpleSearch"/>
                 <map:transform type="IncludePageMeta">
-                    <map:parameter name="stylesheet.screen.discovery#1" value="../../static/css/discovery/discovery-style.css"/>
-
+                    <map:parameter name="search.hide" value="true" />
                     <map:parameter name="javascript.static#1" value="loadJQuery.js"/>
                     <map:parameter name="javascript.static#2" value="static/js/discovery/search-controls.js"/>
                 </map:transform>
@@ -151,8 +151,6 @@ and searching the repository.
                             <map:transform type="SidebarFacetsTransformer"/>
                             <map:transform type="SimpleSearch"/>
                             <map:transform type="IncludePageMeta">
-                                <map:parameter name="stylesheet.screen.discovery#1" value="../../static/css/discovery/discovery-style.css"/>
-
                                 <map:parameter name="javascript.static#1" value="loadJQuery.js"/>
                                 <map:parameter name="javascript.static#2" value="static/js/discovery/search-controls.js"/>
                             </map:transform>
