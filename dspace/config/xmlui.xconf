@@ -197,5 +197,10 @@
              For information on configuring the mobile theme, see:
              dspace-xmlui/src/main/webapp/themes/mobile/readme.txt
         -->
+    	<!-- UFAL Homepage -->
+    	<theme name="UFAL Homepage" regex="^$" path="UFALHome/" />
+    	
+    	<!-- UFAL theme -->
+        <theme name="UFAL Theme" regex=".*" path="UFAL/" />
     </themes>
 </xmlui>
