@@ -35,7 +35,7 @@ registration, forgotten passwords, editing profiles, and changing passwords.
 			<map:transformer name="ResetPassword" src="org.dspace.app.xmlui.aspect.eperson.ResetPassword"/>
 			<map:transformer name="ForgotPasswordFinished" src="org.dspace.app.xmlui.aspect.eperson.ForgotPasswordFinished"/>
 			
-			<map:transformer name="WelcomeLogin" src="org.dspace.app.xmlui.aspect.eperson.WelcomeLogin"/>
+			<map:transformer name="WelcomeLogin" src="cz.cuni.mff.ufal.dspace.app.xmlui.aspect.eperson.WelcomeLogin"/>
 			<map:transformer name="ProfileUpdated" src="org.dspace.app.xmlui.aspect.eperson.ProfileUpdated"/>
 			<map:transformer name="LoginChooser" src="org.dspace.app.xmlui.aspect.eperson.LoginChooser"/>
 			<map:transformer name="FailedAuthentication" src="org.dspace.app.xmlui.aspect.eperson.FailedAuthentication" />
