@@ -546,7 +546,7 @@ public class DatabaseUtils
         
         if(tableColumnExists(connection, "handle", "url"))
         {
-            return "1.8.ufal";
+            return "1.8.117.102.97.108";
         }
 
         // Is this DSpace 1.8.x? Look for the "bitstream_order" column in the "bundle2bitstream" table

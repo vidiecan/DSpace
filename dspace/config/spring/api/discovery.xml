@@ -216,13 +216,15 @@
         <property name="searchFilters">
             <list>
                 <ref bean="searchFilterTitle" />
-                <ref bean="searchFilterAuthor" />
-                <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterRights" />
 		        <ref bean="searchFilterPublisher" />
-		        <ref bean="searchFilterLanguage" />
-		        <ref bean="searchFilterType" />
+                <ref bean="searchFacetAuthor" />
+                <ref bean="searchFacetSubject" />
+                <ref bean="searchFacetRights" />
+		        <ref bean="searchFacetLanguage" />
+		        <ref bean="searchFacetType" />
+		        <ref bean="searchFacetFile" />
+		        <ref bean="searchFacetBranding" />		        
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -459,7 +461,7 @@
         <property name="splitter" value="::"/>
 		<property name="fullAutoComplete" value="true"/>
     </bean>
-    <bean id="searchFilterRights" class="org.dspace.discovery.configuration.DiscoverySearchFilter">	
+    <bean id="searchFilterRights" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">	
         <property name="indexFieldName" value="rights"/>
         <property name="metadataFields">
             <list>
@@ -483,7 +485,7 @@
         <property name="sortOrder" value="VALUE"/>
 		<property name="fullAutoComplete" value="false"/>
     </bean>
-    <bean id="searchFilterPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFilterPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="publisher"/>
         <property name="metadataFields">
             <list>
@@ -494,7 +496,7 @@
         <property name="sortOrder" value="COUNT"/>
         <property name="fullAutoComplete" value="true"/>
     </bean>
-   <bean id="searchFilterLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+   <bean id="searchFilterLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="language"/>
         <property name="metadataFields">
             <list>
@@ -506,7 +508,7 @@
         <property name="type" value="iso_language"/>
         <property name="fullAutoComplete" value="false"/>	
     </bean>
-    <bean id="searchFilterType" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFilterType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="type"/>
         <property name="metadataFields">
             <list>
@@ -518,7 +520,7 @@
         <property name="fullAutoComplete" value="false"/>
     </bean>
     <!--Search facet configuration beans-->
-    <bean id="searchFacetAuthor" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetAuthor" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="author"/>
         <property name="metadataFields">
             <list>
@@ -531,7 +533,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>
 
-    <bean id="searchFacetSubject" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetSubject" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="subject"/>
         <property name="metadataFields">
             <list>
@@ -542,7 +544,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>
 
-    <bean id="searchFacetDateIssued" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetDateIssued" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="dateIssued"/>
         <property name="metadataFields">
             <list>
@@ -554,7 +556,7 @@
         <property name="sortOrder" value="VALUE"/>
     </bean>
 
-    <bean id="searchFacetRights" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetRights" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="rights"/>
         <property name="metadataFields">
             <list>
@@ -565,7 +567,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>
 
-    <bean id="searchFacetPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="publisher"/>
         <property name="metadataFields">
             <list>
@@ -576,7 +578,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>
 
-    <bean id="searchFacetLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="language"/>
         <property name="metadataFields">
             <list>
@@ -588,7 +590,7 @@
         <property name="type" value="iso_language"/>
     </bean>
 
-    <bean id="searchFacetType" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="type"/>
         <property name="metadataFields">
             <list>
@@ -599,7 +601,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>
     
-    <bean id="searchFacetFile" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetFile" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="hasfile"/>
         <property name="metadataFields">
             <list>
@@ -609,7 +611,7 @@
         <property name="sortOrder" value="COUNT"/>
     </bean>   
     
-    <bean id="searchFacetBranding" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+    <bean id="searchFacetBranding" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="branding"/>
         <property name="metadataFields">
             <list>
