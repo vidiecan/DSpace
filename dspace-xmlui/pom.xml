@@ -101,6 +101,13 @@
 	  	<groupId>cz.cuni.mff.ufal.dspace</groupId>
 	  	<artifactId>b2safe-dspace</artifactId>
 	 </dependency>
+
+     <!-- because of event listener that updates oai -->
+	 <dependency>
+	  	<groupId>org.dspace</groupId>
+	  	<artifactId>dspace-oai</artifactId>
+        <classifier>classes</classifier>
+	 </dependency>
             
 
         <dependency>

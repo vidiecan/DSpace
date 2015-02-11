@@ -214,7 +214,8 @@ public class Navigation extends AbstractDSpaceTransformer implements CacheablePr
         {
             String fullName = eperson.getFullName();
             account.addItemXref(contextPath+"/logout",T_logout);
-            account.addItemXref(contextPath+"/profile",T_profile.parameterize(fullName));
+            //account.addItemXref(contextPath+"/profile",T_profile.parameterize(fullName));
+            account.addItemXref(contextPath+"/profile",T_profile);
         } 
         else 
         {
