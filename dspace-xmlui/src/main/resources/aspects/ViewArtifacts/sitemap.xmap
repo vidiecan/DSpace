@@ -26,7 +26,7 @@ and searching the repository.
 
 		<map:transformers>
 
-            <map:transformer name="UFALLicenceItemViewer" src="org.dspace.app.xmlui.aspect.artifactbrowser.UFALLicenceItemViewer"/>
+            <map:transformer name="UFALLicenceItemViewer" src="cz.cuni.mff.ufal.dspace.app.xmlui.aspect.artifactbrowser.UFALLicenceItemViewer"/>
 
 			<map:transformer name="Navigation" src="org.dspace.app.xmlui.aspect.viewArtifacts.Navigation" />
 			<map:transformer name="CommunityViewer" src="org.dspace.app.xmlui.aspect.artifactbrowser.CommunityViewer" />
