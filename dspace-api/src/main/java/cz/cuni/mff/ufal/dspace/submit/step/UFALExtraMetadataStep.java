@@ -11,7 +11,7 @@
  *
  * Extra generic metadata support v0.1
  */
-package org.dspace.submit.step;
+package cz.cuni.mff.ufal.dspace.submit.step;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,7 +40,7 @@ import org.dspace.core.Context;
  * @author jm
  * modified for LINDAT/CLARIN
  */
-public class UFALExtraMetadataStep extends DescribeStep
+public class UFALExtraMetadataStep extends org.dspace.submit.step.DescribeStep
 {
     private static Logger log = Logger.getLogger(UFALExtraMetadataStep.class);
 

@@ -213,7 +213,7 @@ public class UFALLicenseStep extends LicenseStep {
 			license_select.setDisabled();
 		}
 
-		if (this.errorFlag == org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DELETE_ERROR) {
+		if (this.errorFlag == cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DELETE_ERROR) {
 			form.addItem().addHighlight("error")
 					.addContent(T_delete_error_name);
 			log.info(LogManager.getHeader(context, "could not remove license",
@@ -276,18 +276,18 @@ public class UFALLicenseStep extends LicenseStep {
 			licenseManager.closeSession();
 		}
 		
-		if (this.errorFlag == org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_NO_NAME) {
+		if (this.errorFlag == cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_NO_NAME) {
 			form.addItem().addHighlight("error")
 					.addContent(T_define_error_name);
 			log.info(LogManager.getHeader(context, "no name for license",
 					submissionInfo.getSubmissionLogInfo()));
 
-		} else if (this.errorFlag == org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_NO_URL) {
+		} else if (this.errorFlag == cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_NO_URL) {
 			form.addItem().addHighlight("error").addContent(T_define_error_url);
 			log.info(LogManager.getHeader(context, "no urlfor license",
 					submissionInfo.getSubmissionLogInfo()));
 
-		} else if (this.errorFlag == org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_ERROR) {
+		} else if (this.errorFlag == cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE_ERROR) {
 			form.addItem().addHighlight("error").addContent(T_define_error);
 			log.info(LogManager.getHeader(context,
 					"error while adding license",
@@ -456,7 +456,7 @@ public class UFALLicenseStep extends LicenseStep {
 		delete_button.setValue(T_delete);
 */
 		// If user did not check "I accept" checkbox
-		if (this.errorFlag == org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_NOT_SELECTED) {
+		if (this.errorFlag == cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_NOT_SELECTED) {
 			controls.addItem().addHighlight("error").addContent(T_select_error);
 			log.info(LogManager.getHeader(context, "notselect_license",
 					submissionInfo.getSubmissionLogInfo()));
@@ -474,13 +474,13 @@ public class UFALLicenseStep extends LicenseStep {
 
 			// define new license - abusing errorFlag ;)
 //		} else if (this.errorFlag >= org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE) {
-		if (this.errorFlag >= org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE) {
+		if (this.errorFlag >= cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DEFINE) {
 			List form = addBodyDefineLicense(body);
 			addControlButtonsDefine(form);
 			return;
 
 			// delete new license
-		} else if (this.errorFlag >= org.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DELETE) {
+		} else if (this.errorFlag >= cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.STATUS_LICENSE_DELETE) {
 			List form = addBodyDeleteLicense(body);
 			addControlButtonsDelete(form);
 			return;
@@ -563,20 +563,20 @@ public class UFALLicenseStep extends LicenseStep {
 	public void addControlButtonsDefine(List controls) throws WingException {
 		Item actions = controls.addItem();
 		actions.addButton(
-				org.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_CANCEL_BUTTON)
+				cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_CANCEL_BUTTON)
 				.setValue(T_previous);
 		actions.addButton(
-				org.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_ADD_BUTTON)
+				cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_ADD_BUTTON)
 				.setValue(T_next);
 	}
 
 	public void addControlButtonsDelete(List controls) throws WingException {
 		Item actions = controls.addItem();
 		actions.addButton(
-				org.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_CANCEL_BUTTON)
+				cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.DEFINELICENSE_CANCEL_BUTTON)
 				.setValue(T_previous);
 		actions.addButton(
-				org.dspace.submit.step.UFALLicenseStep.DELETELICENSE_DELETE_BUTTON)
+				cz.cuni.mff.ufal.dspace.submit.step.UFALLicenseStep.DELETELICENSE_DELETE_BUTTON)
 				.setValue(T_next);
 	}
 

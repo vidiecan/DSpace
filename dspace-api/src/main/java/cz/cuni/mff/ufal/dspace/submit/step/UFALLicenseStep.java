@@ -5,7 +5,7 @@
  *
  * http://www.dspace.org/license/
  */
-package org.dspace.submit.step;
+package cz.cuni.mff.ufal.dspace.submit.step;
 
 import cz.cuni.mff.ufal.lindat.utilities.hibernate.LicenseDefinition;
 import cz.cuni.mff.ufal.lindat.utilities.interfaces.IFunctionalities;
@@ -33,7 +33,7 @@ import org.dspace.eperson.EPerson;
 /**
  * modified for LINDAT/CLARIN
  */
-public class UFALLicenseStep extends LicenseStep {
+public class UFALLicenseStep extends org.dspace.submit.step.LicenseStep {
 
 	/** log4j logger */
 	private static Logger log = Logger.getLogger(UFALLicenseStep.class);
