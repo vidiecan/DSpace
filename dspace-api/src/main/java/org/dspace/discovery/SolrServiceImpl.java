@@ -2051,6 +2051,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
         if(StringUtils.isNotBlank(field))
         {
             filterQuery.append(field);
+            result.setField(field);
             if("equals".equals(operator))
             {
                 //Query the keyword indexed field !

@@ -192,7 +192,7 @@ if(0 < filterTypes.size() || 0 < filterFields.size()){
                     select.addOption(searchFilter.getIndexFieldName(), message("xmlui.ArtifactBrowser.SimpleSearch.filter." + searchFilter.getIndexFieldName()));
                 }
 
-                Select operator = filterComp.addSelect("operator", "widthauto");
+                Select operator = filterComp.addSelect("filter_relational_operator", "widthauto");
                 operator.addOption("contains", "contains");
                 operator.addOption("equals", "equals");
                 operator.addOption("notcontains", "not contains");
