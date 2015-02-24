@@ -35,3 +35,5 @@ META-INF/
 
 #.bak files
 *.bak
+
+.*.sw[pon]

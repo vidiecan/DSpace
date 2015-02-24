@@ -1,0 +1,30 @@
+# Makefile for this project
+# by LINDAT/CLARIN dev team
+#
+# Note: If you want to change this file, copy it to project/config
+# 
+
+# lindat settings
+LINDAT_COMMON_THEME_BRANCH=bootstrap3
+
+# tomcat
+TOMCAT_VERSION=6
+TOMCAT_USER:=tomcat$(TOMCAT_VERSION)
+TOMCAT_GROUP:=tomcat$(TOMCAT_VERSION)
+TOMCAT_CONF:=/etc/$(TOMCAT_USER)
+
+# dspace
+DSPACE_USER:=dspace
+
+# tool directories
+DIRECTORY_POSTGRESQL:=/var/lib/postgresql
+APACHE:=/etc/init.d/apache2
+SHIB:=/etc/init.d/shibboleth
+TOMCAT:=/etc/init.d/tomcat8
+POSTGRES:=/etc/init.d/postgresql-9.4
+HANDLE_SERVER:=/etc/init.d/handle-server
+BACKUP2l:=/usr/sbin/backup2l
+
+# database settings - mostly for recovering 
+#RESTORE_FROM_DATABASE=prod-dspace-1.8
+RESTORE_FROM_DATABASE=lrt-dspace-1.8
