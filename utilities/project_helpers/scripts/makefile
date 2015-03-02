@@ -83,7 +83,7 @@ SUBSTITUTED_DSPACE_CFG  :=$(DIR_SUBST)/$(DSPACE_CFG_BASENAME).substituted
 
 MVN_ENV			:=deploy
 
-MVN_OPTS		:=-Denv=$(MVN_ENV) $(DSPACE_MVN_PROJECTS)
+MVN_OPTS		:=-X -Dmaven.test.skip=true -Denv=$(MVN_ENV) $(DSPACE_MVN_PROJECTS) -P '!generate-test-env'
 
 # LR Configuration
 
