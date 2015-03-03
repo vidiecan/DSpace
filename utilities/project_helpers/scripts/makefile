@@ -15,6 +15,8 @@
 #
 
 SHELL=/bin/bash
+#export JAVA_HOME=/usr/lib/jvm/jdk1.7.0
+export MAVEN_OPTS=-Xmx6g -Xms6g -XX:+UseG1GC
 
 #======================================================
 # Basic dirs
@@ -83,7 +85,7 @@ SUBSTITUTED_DSPACE_CFG  :=$(DIR_SUBST)/$(DSPACE_CFG_BASENAME).substituted
 
 MVN_ENV			:=deploy
 
-MVN_OPTS		:=-X -Dmaven.test.skip=true -Denv=$(MVN_ENV) $(DSPACE_MVN_PROJECTS) -P '!generate-test-env'
+MVN_OPTS		:=-Dassembly.recompressZippedFiles=false -Dmaven.test.skip=true -Dassembly.ignorePermissions=true -Denforcer.skip=true -Dfork=true -Denv=$(MVN_ENV) $(DSPACE_MVN_PROJECTS) -P '!generate-test-env'
 
 # LR Configuration
 
@@ -116,13 +118,16 @@ DATABASE_BACKUP_DIRECTORY=/home/backup
 
 # tools
 
-ANT_WITH_CONF:=ant -v -Dconfig="$(SUBSTITUTED_DSPACE_CFG)" -Doverwrite=true
+ANT_WITH_CONF:=ant -Dconfig="$(SUBSTITUTED_DSPACE_CFG)" -Doverwrite=true
 HIDE_PASSW:=sed '/Password/Id'
 
 
 #======================================================
 # Goals
 #======================================================
+
+mvn_help:
+	mvn help:system
 
 #======================================================
 # setup related

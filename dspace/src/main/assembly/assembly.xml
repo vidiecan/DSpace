@@ -108,6 +108,7 @@
       [src]/dspace/modules/ dir and add them into 'lib' directory
       -->
       <moduleSet>
+	 <useAllReactorProjects>true</useAllReactorProjects>
          <includes>
             <include>org.dspace.modules:*:jar:*</include>
          </includes>
@@ -131,6 +132,7 @@
       'webapps' directory
       -->
       <moduleSet>
+	 <useAllReactorProjects>true</useAllReactorProjects>
          <includes>
             <include>org.dspace.modules:*:war:*</include>
          </includes>
