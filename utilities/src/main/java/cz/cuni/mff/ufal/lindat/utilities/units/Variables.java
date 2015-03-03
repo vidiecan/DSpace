@@ -76,11 +76,7 @@ public class Variables {
 		try { 			
           URL url = null;
           if ( null == dspace_cfg_path ) {
-            url = Variables.class.getClassLoader().getResource("../../../../config/modules/lr.cfg");
-	    if( url == null){
-		//if running from cmd line
-		url = Variables.class.getClassLoader().getResource("../config/modules/lr.cfg");
-	    }
+            url = Variables.class.getClassLoader().getResource("config/modules/lr.cfg"); 
           }else {
             url = new URL(dspace_cfg_path);
           }
