@@ -402,8 +402,9 @@ public class HibernateFunctionalityManager implements IFunctionalities {
 	// test connection
 	public static void main(String args[]) {
 		try {
+			//expecting the user.dir is .../utilities
 			String dspace_path = "file://" + System.getProperty("user.dir")
-					+ "/../../sources/dspace/config/modules/lr.cfg";
+					+ "/../dspace/config/modules/lr.cfg";
 			Variables.init(dspace_path);
 			System.out
 					.println(String
