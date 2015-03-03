@@ -559,6 +559,7 @@ public class EditProfile extends AbstractDSpaceTransformer
 		String netid = eperson.getNetid();
 		boolean has_netid = netid != null && !netid.isEmpty();
 		boolean has_password = eperson.getPasswordHash() != null
+				&& eperson.getPasswordHash().getHashString() != null
 				&& !eperson.getPasswordHash().getHashString().isEmpty();
 		boolean is_probably_local_user = eperson == null ? false : has_password
 				&& !has_netid;
