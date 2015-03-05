@@ -11,6 +11,7 @@ import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.app.xmlui.wing.element.Division;
 import org.dspace.app.xmlui.wing.element.Row;
 import org.dspace.app.xmlui.wing.element.Table;
+import org.dspace.content.Collection;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.workflow.WorkflowManager;
@@ -67,7 +68,7 @@ public class ControlPanelUnpublishedItemsTab extends AbstractControlPanelTab {
 			wsrow.addCell().addContent(dbrow.getIntColumn("workflow_id"));
 			int itemID = dbrow.getIntColumn("item_id");			
 			wsrow.addCell().addXref(contextPath + "/admin/item?cp=1&identifier=" + itemID).addContent(itemID);
-			wsrow.addCell().addContent(dbrow.getStringColumn("collection_name"));
+			wsrow.addCell().addContent(Collection.find(context, dbrow.getIntColumn("collection_id")).getName());
 			wsrow.addCell().addHighlight(getWorkflowStateClass(state)).addContent(getWorkflowStateMessage(state));			
 			String owner = dbrow.getStringColumn("owner");
 			if(owner!=null) {
@@ -134,7 +135,7 @@ public class ControlPanelUnpublishedItemsTab extends AbstractControlPanelTab {
 		String query =
 				"SELECT w.workflow_id, " +
 				"		w.item_id, " +
-				"		c.name as collection_name, " +
+				"		w.collection_id, " +
 				"		w.state, " +
 				"		e.email as owner, " +
 				"		i.last_modified " +
