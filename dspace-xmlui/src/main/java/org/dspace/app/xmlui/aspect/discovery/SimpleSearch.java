@@ -218,7 +218,12 @@ if(0 < filterTypes.size() || 0 < filterFields.size()){
 
                 for (int i = 0; i <  filterTypes.size(); i++) {
                     String filterType = filterTypes.get(i);
-                    String filterOperator = filterOperators.get(i);
+                    String filterOperator;
+                    if(i < filterOperators.size()){
+                    	filterOperator = filterOperators.get(i);
+                    } else{
+                    	filterOperator = null;
+                    }
                     String filterValue = filterValues.get(i);
                     
                     if(StringUtils.isBlank(filterOperator)){
