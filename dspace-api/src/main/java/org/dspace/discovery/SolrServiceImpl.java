@@ -1157,8 +1157,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                         if (searchFilter.isFullAutoComplete())
                         {
                             doc.addField(searchFilter.getIndexFieldName()
-                                    + "_ac", value.toLowerCase() + separator
-                                    + value);
+                                    + "_ac", value);
                         }
                         else
                         {

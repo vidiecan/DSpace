@@ -460,6 +460,11 @@
             <filter class="solr.TrimFilterFactory" />
         </analyzer>
     </fieldType>
+    <fieldType name="noLowKeywordFilter" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+        <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
+        </analyzer>
+    </fieldType>
 
       <!--
        SpellCheck analysis config based off of http://wiki.apache.org/solr/
@@ -578,7 +583,7 @@
 	<dynamicField name="*_acid" type="keywordFilter" indexed="true" stored="true" omitNorms="true" multiValued="true"/>
 	
      <!--Dynamic field used for sidebar filters & SOLR browse by value -->
-     <dynamicField name="*_filter" type="keywordFilter" indexed="true" stored="true" multiValued="true" omitNorms="true" />
+     <dynamicField name="*_filter" type="noLowKeywordFilter" indexed="true" stored="true" multiValued="true" omitNorms="true" />
      <dynamicField name="*_authority" type="keywordFilter" indexed="true" stored="true" multiValued="true" omitNorms="true" />
      <dynamicField name="*_keyword" type="keywordFilter" indexed="true" stored="true" multiValued="true" omitNorms="true" />
 
