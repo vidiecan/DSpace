@@ -230,13 +230,13 @@
 				<xsl:if test="following-sibling::*[1][self::dri:list]">
 					<xsl:for-each select="following-sibling::*[1]/dri:item">
 						<li>
-							<xsl:if test="dri:xref[@rend='gear-option gear-option-selected']">
+							<xsl:if test="dri:xref[@rend='gear-option gear-option-selected'] or self::dri:item[@rend='gear-option gear-option-selected']">
 								<xsl:attribute name="class">
 									<xsl:text>disabled</xsl:text>
 								</xsl:attribute>
 							</xsl:if>
 							<a>
-								<xsl:if test="dri:xref[@rend='gear-option gear-option-selected']">
+								<xsl:if test="dri:xref[@rend='gear-option gear-option-selected'] or self::dri:item[@rend='gear-option gear-option-selected']">
 									<i class="fa fa-check">&#160;</i>
 								</xsl:if>
 								<xsl:attribute name="href">
