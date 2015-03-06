@@ -531,6 +531,7 @@
         </property>
         <property name="facetLimit" value="20"/>
         <property name="sortOrder" value="COUNT"/>
+        <property name="fullAutoComplete" value="true"/>
     </bean>
 
     <bean id="searchFacetSubject" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -542,6 +543,7 @@
         </property>
         <property name="facetLimit" value="20"/>
         <property name="sortOrder" value="COUNT"/>
+        <property name="fullAutoComplete" value="true"/>
     </bean>
 
     <bean id="searchFacetDateIssued" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -565,6 +567,7 @@
         </property>
         <property name="facetLimit" value="20"/>
         <property name="sortOrder" value="COUNT"/>
+        <property name="fullAutoComplete" value="true"/>
     </bean>
 
     <bean id="searchFacetPublisher" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
@@ -576,6 +579,7 @@
         </property>
         <property name="facetLimit" value="20"/>
         <property name="sortOrder" value="COUNT"/>
+        <property name="fullAutoComplete" value="true"/>
     </bean>
 
     <bean id="searchFacetLanguage" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
