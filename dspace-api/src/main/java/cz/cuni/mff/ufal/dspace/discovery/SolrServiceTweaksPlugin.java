@@ -105,6 +105,23 @@ public class SolrServiceTweaksPlugin implements SolrServiceIndexPlugin,
                         }
                     }
                 }
+                
+                for (Map.Entry<String, List<DiscoverySearchFilter>> entry : searchFilters
+                        .entrySet())
+                {
+                	//clear any input document fields we are about to add lower
+                    //String metadataField = entry.getKey();
+                    List<DiscoverySearchFilter> filters = entry.getValue();
+                    for (DiscoverySearchFilter filter : filters)
+                    {
+                    	String name = filter.getIndexFieldName();
+                    	String[] names = {name, name + "_filter", name + "_keyword",
+                    			name + "_ac"};
+                    	for(String fieldName : names){
+                    		document.removeField(fieldName);
+                    	}
+                    }
+                }
 
                 for (Map.Entry<String, List<DiscoverySearchFilter>> entry : searchFilters
                         .entrySet())
@@ -175,6 +192,10 @@ public class SolrServiceTweaksPlugin implements SolrServiceIndexPlugin,
                                                     + "_keyword", langName);
                                     document.addField(
                                             filter.getIndexFieldName() + "_ac",
+                                            langName);
+                                    //this should ensure it's copied into the default search field
+                                    document.addField(
+                                            "dc.language.name",
                                             langName);
                                 }
                                 else
