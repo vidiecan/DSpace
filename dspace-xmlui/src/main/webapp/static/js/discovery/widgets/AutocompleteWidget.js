@@ -17,35 +17,39 @@ AjaxSolr.AutocompleteWidget = AjaxSolr.AbstractFacetWidget.extend({
 
     var callback = function (response) {
       var list = [];
+      var source = [];
+      var counts = [];
       for (var field in response.facet_counts.facet_fields) {
         for (var facet in response.facet_counts.facet_fields[field]) {
-          list.push({
+	  var text = facet + ' (' + response.facet_counts.facet_fields[field][facet] + ')';
+          list[text] = {
             field: field,
             value: facet,
-            text: facet + ' (' + response.facet_counts.facet_fields[field][facet] + ')'
-          });
+            text: text,
+          };
+	  source.push(text);
+          counts[text] = response.facet_counts.facet_fields[field][facet]; 
         }
       }
 
       self.requestSent = false;
-      $(self.target).find("input[type='text']").autocomplete(list, {
-        formatItem: function(facet) {
-          return facet.text;
-        }
-      }).result(function(e, facet) {
-          $(this).val("\"" + facet.value+"\"");
-//        self.requestSent = true;
-//        if (self.manager.store.addByValue('fq', facet.field + ':' + facet.value)) {
-//          self.manager.doRequest(0);
-//        }
-      }).bind('keydown', function(e) {
-        if (self.requestSent === false && e.which == 13) {
-          var value = $(this).val();
-          if (value && self.add(value)) {
-            self.manager.doRequest(0);
-          }
-        }
-      });
+      $(self.target).find("input[type='text']").typeahead({
+		source: source,
+		updater: function(item){
+		  console.log("Processing " + item);
+		  return "\"" + list[item].value + "\"";
+		},
+		matcher: function(item){
+			var value = item.substring(0,item.lastIndexOf("(") - 1); //-1 for space in front of '('
+			//default matcher but changed value
+			return ~value.toLowerCase().indexOf(this.query.toLowerCase());
+		},
+		sorter: function(items){
+			return items.sort(function(i1, i2){
+				return counts[i2] - counts[i1];
+			})
+		},
+        });
     }; // end callback
 
     var params = [ 'q=' + query + '&facet=true&facet.limit=-1&facet.sort=count&facet.mincount=1&json.nl=map' ];
