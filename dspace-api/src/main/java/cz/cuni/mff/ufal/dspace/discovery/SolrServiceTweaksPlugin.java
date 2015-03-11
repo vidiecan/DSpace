@@ -50,6 +50,7 @@ public class SolrServiceTweaksPlugin implements SolrServiceIndexPlugin,
             query = "*:*";
         }
         String q = solrQuery.getQuery() + " OR title:(" + query + ")^5";
+        q = q + " OR ((" + q + ") AND -dc.relation.isreplacedby:*)^5 OR ((" + q + ") AND dc.relation.replaces:*)^15";
         solrQuery.setQuery(q);
 
     }
