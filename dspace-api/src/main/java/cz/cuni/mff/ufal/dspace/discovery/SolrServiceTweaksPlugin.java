@@ -61,6 +61,7 @@ public class SolrServiceTweaksPlugin implements SolrServiceIndexPlugin,
         if (dso.getType() == Constants.ITEM)
         {
             Item item = (Item) dso;
+            //create our filter values
             List<DiscoveryConfiguration> discoveryConfigurations;
             try
             {
@@ -212,6 +213,20 @@ public class SolrServiceTweaksPlugin implements SolrServiceIndexPlugin,
             catch (SQLException e)
             {
                 log.error(e.getMessage());
+            }
+            //process item metadata
+            //just add _comp to local*
+            Metadatum[] mds = item.getMetadata("local", Item.ANY, Item.ANY, Item.ANY);
+            for(Metadatum meta : mds){
+            	String field = meta.schema + "." + meta.element;
+                String value = meta.value;
+                if (value == null) {
+                    continue;
+                }
+                if (meta.qualifier != null && !meta.qualifier.trim().equals("")) {
+                    field += "." + meta.qualifier;
+                }
+            	document.addField(field + "_comp", value);
             }
         }
     }
