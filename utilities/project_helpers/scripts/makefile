@@ -197,7 +197,7 @@ substitute_configs:
 	    --substitute="$(DSPACE_CFG)" \
 	    --with="$(LOCAL_CONF)" \
 	    --to="$(SUBSTITUTED_DSPACE_CFG)"
-	@cp $(SUBSTITUTED_DSPACE_CFG) $(DIR_SOURCE)/$(MVN_ENV).properties
+	@cd $(BASE) && bash fillProperties.sh $(DIR_SOURCE)/build.properties $(SUBSTITUTED_DSPACE_CFG) $(DIR_SOURCE)/$(MVN_ENV).properties
 	@if [ "$(LR_CFG_EXISTS)" = "0" ]; then echo -e "$(RED)lr.cfg not found.$(NORMAL)" && exit -1; fi
 	@cd $(BASE) && python setup.lindat.py \
 	    --substitute="$(LR_CFG)" \
