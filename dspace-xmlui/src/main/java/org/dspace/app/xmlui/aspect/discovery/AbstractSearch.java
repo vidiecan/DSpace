@@ -982,6 +982,8 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
         DiscoveryConfiguration discoveryConfiguration = SearchUtils.getDiscoveryConfiguration(dso);
 
         Division searchControlsGear = div.addDivision("masked-page-control").addDivision("search-controls-gear", "controls-gear-wrapper");
+        
+        String filterQueries = addFilterQueriesToUrl("discover?")+"&";
 
 
         /**
@@ -994,7 +996,7 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
 
         org.dspace.app.xmlui.wing.element.List sortOptions = sortList.addList("sort-selections");
         boolean selected = ("score".equals(currentSort) || (currentSort == null && searchSortConfiguration.getDefaultSort() == null));
-        sortOptions.addItem("relevance", "gear-option" + (selected ? " gear-option-selected" : "")).addXref("discover?sort_by=score&order=" + searchSortConfiguration.getDefaultSortOrder(), T_sort_by_relevance);
+        sortOptions.addItem("relevance", "gear-option" + (selected ? " gear-option-selected" : "")).addXref(filterQueries + "sort_by=score&order=" + searchSortConfiguration.getDefaultSortOrder(), T_sort_by_relevance);
 
         if (currentSort == null
                 && searchSortConfiguration.getDefaultSort() != null)
@@ -1022,7 +1024,7 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
                         && SORT_ORDER.asc.name().equals(sortOrder);
                 boolean selectedDesc = sortField.equals(currentSort)
                         && SORT_ORDER.desc.name().equals(sortOrder);
-                String sortFieldParam = "discover?sort_by=" + sortField + "&order=";
+                String sortFieldParam = filterQueries + "sort_by=" + sortField + "&order=";
                 sortOptions.addItem(sortField, "gear-option" + (selectedAsc ? " gear-option-selected" : "")).addXref(sortFieldParam + "asc", message("xmlui.Discovery.AbstractSearch.sort_by." + sortField + "_asc"));
                 sortOptions.addItem(sortField, "gear-option" + (selectedDesc ? " gear-option-selected" : "")).addXref(sortFieldParam + "desc", message("xmlui.Discovery.AbstractSearch.sort_by." + sortField + "_desc"));
             }
@@ -1033,7 +1035,7 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
         org.dspace.app.xmlui.wing.element.List rppOptions = sortList.addList("rpp-selections");
         for (int i : RESULTS_PER_PAGE_PROGRESSION)
         {
-            rppOptions.addItem("rpp-" + i, "gear-option" + (i == getParameterRpp() ? " gear-option-selected" : "")).addXref("discover?rpp=" + i, Integer.toString(i));
+            rppOptions.addItem("rpp-" + i, "gear-option" + (i == getParameterRpp() ? " gear-option-selected" : "")).addXref(filterQueries + "rpp=" + i, Integer.toString(i));
         }
     }
 
