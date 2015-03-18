@@ -126,7 +126,7 @@ public class WelcomeLogin extends AbstractDSpaceTransformer
                 if ( ignores_.contains(key) || 0 == value.trim().length() ) {
                     continue;
                 } else {
-                	l.addLabel(null, "label").addContent(key);
+                	l.addLabel(null, "label label-default").addContent(key);
                 	l.addItem(value);
                 }
             }
