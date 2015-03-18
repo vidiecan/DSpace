@@ -12,8 +12,14 @@ import org.dspace.content.DCDate;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.embargo.EmbargoManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.lyncode.xoai.dataprovider.xml.xoaiconfig.parse.conditions.AddConditionParser;
 
 public class ControlPanelEmbargo extends AbstractControlPanelTab {
+
+    private static Logger log = LoggerFactory.getLogger(ControlPanelEmbargo.class);
 
 	@Override
 	public void addBody(Map objectModel, Division div) throws WingException, SQLException 
@@ -22,6 +28,7 @@ public class ControlPanelEmbargo extends AbstractControlPanelTab {
 		try {
 			item_iter = EmbargoManager.getEmbargoedItems(context);
 		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
 
 		// header
@@ -29,7 +36,7 @@ public class ControlPanelEmbargo extends AbstractControlPanelTab {
 		wfdivmain.setHead("EMBARGO ITEMS");
 
 		if ( item_iter == null ) {
-			wfdivmain.addPara("Could not fetch embargoed items.", "alert alert-error");
+			wfdivmain.addPara(null, "alert alert-error").addContent("Could not fetch embargoed items.");
 			return;
 		}
 		
