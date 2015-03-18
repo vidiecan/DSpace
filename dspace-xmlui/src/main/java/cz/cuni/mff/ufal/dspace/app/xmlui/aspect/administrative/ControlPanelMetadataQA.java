@@ -96,7 +96,7 @@ public class ControlPanelMetadataQA extends AbstractControlPanelTab {
             }
 
         String query = "SELECT DISTINCT(item.item_id) FROM metadatavalue,item WHERE "+
-                       "item.item_id = metadatavalue.item_id AND metadata_field_id = ? AND item.in_archive='1'";
+                       "item.item_id = metadatavalue.resource_id AND metadata_field_id = ? AND item.in_archive='1'";
         java.util.List<Integer> itemids = new ArrayList<Integer>();
         TableRowIterator rows = DatabaseManager.queryTable(context, "item", query, mdf.getFieldID());
         while ( rows.hasNext() ) {
