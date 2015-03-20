@@ -356,6 +356,10 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
             // Put it on the top of level search result list
             dspaceObjectsList = results.addList("search-results-repository",
                     org.dspace.app.xmlui.wing.element.List.TYPE_DSO_LIST, "repository-search-results");
+            
+            ReferenceSet referenceSet = results.addReferenceSet("search-results-repository",
+                    ReferenceSet.TYPE_SUMMARY_LIST, null, "repository-search-results");
+
 
             List<DSpaceObject> commCollList = new ArrayList<DSpaceObject>();
             List<Item> itemList = new ArrayList<Item>();
@@ -407,6 +411,7 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
                 {
                     DiscoverResult.DSpaceObjectHighlightResult highlightedResults = queryResults.getHighlightedResults(resultDso);
                     renderItem(itemWingList, resultDso, highlightedResults);
+                    referenceSet.addReference(resultDso);
                 }
             }
 

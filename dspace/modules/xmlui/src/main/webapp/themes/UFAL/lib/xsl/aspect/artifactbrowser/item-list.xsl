@@ -118,6 +118,11 @@
         </h4>
     </xsl:template>
     
+    <!-- XXX hide dspace5 item-list instead use referenceSet and mets md
+	 This effectively disables highlighting I believe
+     -->
+    <xsl:template match="dri:list[@n='search-results-repository']" priority="10">
+    </xsl:template>
     <!-- An item rendered in the summaryList pattern. Commonly encountered in various browse-by pages
         and search results. -->
     <xsl:template name="itemSummaryList-DIM">
