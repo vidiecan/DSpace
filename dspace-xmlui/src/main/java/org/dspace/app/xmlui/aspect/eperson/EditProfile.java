@@ -632,12 +632,13 @@ public class EditProfile extends AbstractDSpaceTransformer
 		if (allowSetPassword) {
 			if (is_probably_local_user || registering) {
 				add_set_password(form, false);
+				added_pass = true;
 			}
 		}
 		// indicate that we have the pass available *only* because we are admins
 		if (!added_pass && isAdmin()) {
 			add_set_password(form, true);
-                        }
+        }
                         
 		// Controls
 		//
