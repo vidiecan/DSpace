@@ -1019,6 +1019,9 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
             sortOrder = searchSortConfiguration.getDefaultSortOrder().name();
         }
 
+        //rpp always != null
+        int rpp = getParameterRpp();
+        
         if(searchSortConfiguration.getSortFields() != null)
         {
             for (DiscoverySortFieldConfiguration sortFieldConfiguration : searchSortConfiguration.getSortFields())
@@ -1029,7 +1032,7 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
                         && SORT_ORDER.asc.name().equals(sortOrder);
                 boolean selectedDesc = sortField.equals(currentSort)
                         && SORT_ORDER.desc.name().equals(sortOrder);
-                String sortFieldParam = filterQueries + "sort_by=" + sortField + "&order=";
+                String sortFieldParam = filterQueries + "rpp=" + rpp + "&sort_by=" + sortField + "&order=";
                 sortOptions.addItem(sortField, "gear-option" + (selectedAsc ? " gear-option-selected" : "")).addXref(sortFieldParam + "asc", message("xmlui.Discovery.AbstractSearch.sort_by." + sortField + "_asc"));
                 sortOptions.addItem(sortField, "gear-option" + (selectedDesc ? " gear-option-selected" : "")).addXref(sortFieldParam + "desc", message("xmlui.Discovery.AbstractSearch.sort_by." + sortField + "_desc"));
             }
@@ -1040,7 +1043,10 @@ public abstract class AbstractSearch extends AbstractDSpaceTransformer implement
         org.dspace.app.xmlui.wing.element.List rppOptions = sortList.addList("rpp-selections");
         for (int i : RESULTS_PER_PAGE_PROGRESSION)
         {
-            rppOptions.addItem("rpp-" + i, "gear-option" + (i == getParameterRpp() ? " gear-option-selected" : "")).addXref(filterQueries + "rpp=" + i, Integer.toString(i));
+        	
+        	String withSortField = filterQueries + (currentSort != null? "sort_by=" + currentSort : "")
+        							+ (sortOrder != null? "&order=" + sortOrder : "");
+            rppOptions.addItem("rpp-" + i, "gear-option" + (i == getParameterRpp() ? " gear-option-selected" : "")).addXref(withSortField + "&rpp=" + i, Integer.toString(i));
         }
     }
 
