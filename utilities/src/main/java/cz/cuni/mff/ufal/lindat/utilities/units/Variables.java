@@ -76,12 +76,17 @@ public class Variables {
 		try { 			
           URL url = null;
           if ( null == dspace_cfg_path ) {
-            url = Variables.class.getClassLoader().getResource("config/modules/lr.cfg"); 
+        	url = Variables.class.getClassLoader().getResource("modules/lr.cfg");
+        	if(url == null){
+        		url = Variables.class.getClassLoader().getResource("config/modules/lr.cfg");
+        	}
           }else {
             url = new URL(dspace_cfg_path);
           }
           // last nasty try
           if ( url == null ) {
+        	  log.error("Failed to find lr.cfg. The class loader search is from " + Variables.class.getClassLoader().getResource("./"));
+        	  System.err.println("Failed to find lr.cfg. The class loader search is from " + Variables.class.getClassLoader().getResource("./"));
               url = Variables.class.getClassLoader().getResource(Variables.class.getName().replace('.', '/') + ".class");
               url = new URL(  new URL(url.getPath().split("utilities-")[0]),
                               "../../../../config/modules/lr.cfg");
