@@ -1,6 +1,7 @@
 package cz.cuni.mff.ufal.dspace.runnable;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -50,11 +51,23 @@ public class DumpConfig {
 		Properties main = ConfigurationManager.getProperties();
         File[] moduleCfgs = new File(ConfigurationManager.getProperty("dspace.dir") +
                                 File.separator + "config" +
-                                File.separator + "modules").listFiles();
+                                File.separator + "modules").listFiles(new FilenameFilter(){
+				@Override
+				public boolean accept(File dir, String name){
+					return name.endsWith(".cfg");
+				}
+				});
         List<Properties> modules = new ArrayList<Properties>(moduleCfgs.length + 1);
         modules.add(main);
         for(File moduleCfg : moduleCfgs){
-        	modules.add(ConfigurationManager.getProperties(moduleCfg.getName().replace(".cfg", "")));
+		String moduleName = moduleCfg.getName().replace(".cfg", "");
+		Properties module = ConfigurationManager.getProperties(moduleName);
+		if(module == null){
+			System.err.println(String.format("Module for name %s is null", moduleName));
+			System.exit(1);
+		}else{
+	        	modules.add(module);
+		}
         }
         return modules;
 	}
