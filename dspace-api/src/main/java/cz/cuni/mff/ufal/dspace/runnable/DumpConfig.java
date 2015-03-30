@@ -1,11 +1,10 @@
-package cz.cuni.mff.ufal.dspace.core;
+package cz.cuni.mff.ufal.dspace.runnable;
 
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
