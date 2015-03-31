@@ -60,7 +60,7 @@ public class Info {
 	
 	final static public String get_ufal_build_time()
 	{
-    	final String buildTime = ConfigurationManager.getProperty("ufal.build_time");
+    	final String buildTime = ConfigurationManager.getProperty("lr", "ufal.build_time");
     	if(buildTime != null && !buildTime.equals("")){
     		return buildTime;
     	}

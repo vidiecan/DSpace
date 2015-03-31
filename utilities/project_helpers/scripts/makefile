@@ -64,7 +64,7 @@ endif
 
 # LINDAT/CLARIN specific
 
-LOCAL_CONF              :=$(DIR_CONF)/local.conf
+LOCAL_CONF              :=$(DIR_SOURCE)/local.properties
 URL_LINDAT_COMMON_GIT   :=https://redmine.ms.mff.cuni.cz/lindat/lindat-common.git
 
 DATABASE_NAME           :=$(shell cd $(BASE) && python setup.lindat.py --get="lr.database" --from="$(LOCAL_CONF)")
@@ -84,23 +84,10 @@ DSPACE_CFG_BASENAME     :=dspace.cfg
 DSPACE_CFG              :=$(DIR_SOURCE)/dspace/config/$(DSPACE_CFG_BASENAME)
 DSPACE_CFG_EXISTS       :=$(shell (if [ -e $(DSPACE_CFG) ]; then echo 1; else echo 0; fi ))
 DSPACE_MVN_PROJECTS     :=-P 'xpdf-mediafilter-support,!dspace-jspui,!dspace-sword-client,!dspace-swordv2,!dspace-sword,!dspace-lni,!dspace-rdf,!dspace-rest,!dspace-xmlui-mirage2'
-# do not change this name unless you change it also in sources e.g., HibernateFunctionalityManager.java
-# - TODO
-SUBSTITUTED_DSPACE_CFG  :=$(DIR_SUBST)/$(DSPACE_CFG_BASENAME).substituted
 
-MVN_ENV			:=deploy
+MVN_ENV			:=local
 
 MVN_OPTS		:=-Dassembly.recompressZippedFiles=false -Dmaven.test.skip=true -Dassembly.ignorePermissions=true -Denforcer.skip=true -Dfork=true -Denv=$(MVN_ENV) $(DSPACE_MVN_PROJECTS) -P '!generate-test-env'
-
-# LR Configuration
-
-LR_CFG_BASENAME     	:=lr.cfg
-LR_CFG              	:=$(DIR_CONF)/template/$(LR_CFG_BASENAME)
-LR_CFG_EXISTS			:=$(shell (if [ -e $(LR_CFG) ]; then echo 1; else echo 0; fi ))
-SUBSTITUTED_LR_CFG  	:=$(DIR_SOURCE)/dspace/config/modules/$(LR_CFG_BASENAME)
-
-# Build time - added to substituted config
-BUILD_TIME:="\#UFAL Build time\nufal.build_time=`date`"
 
 # makefile specific
 
@@ -123,7 +110,7 @@ DATABASE_BACKUP_DIRECTORY=/home/backup
 
 # tools
 
-ANT_WITH_CONF:=ant -Dconfig="$(SUBSTITUTED_DSPACE_CFG)" -Doverwrite=true
+ANT_WITH_CONF:=ant -Doverwrite=true
 HIDE_PASSW:=sed '/Password/Id'
 
 
@@ -190,38 +177,17 @@ clean_source: deploy_logs
 clean_installation:
 	@cd $(DIR_BUILD) && $(ANT_WITH_CONF) clean_backups 2>&1 | $(HIDE_PASSW) | tee  $(DIR_DEPLOY_LOGS)/$@.log
 	
-substitute_configs:
-	@echo "Substituting config values using $(LOCAL_CONF)"
-	@if [ "$(DSPACE_CFG_EXISTS)" = "0" ]; then echo -e "$(RED)dpsace.cfg not found.$(NORMAL)" && exit -1; fi
-	@cd $(BASE) && python setup.lindat.py \
-	    --substitute="$(DSPACE_CFG)" \
-	    --with="$(LOCAL_CONF)" \
-	    --to="$(SUBSTITUTED_DSPACE_CFG)"
-	@cd $(BASE) && bash fillProperties.sh $(DIR_SOURCE)/build.properties $(SUBSTITUTED_DSPACE_CFG) $(DIR_SOURCE)/$(MVN_ENV).properties
-	@if [ "$(LR_CFG_EXISTS)" = "0" ]; then echo -e "$(RED)lr.cfg not found.$(NORMAL)" && exit -1; fi
-	@cd $(BASE) && python setup.lindat.py \
-	    --substitute="$(LR_CFG)" \
-	    --with="$(LOCAL_CONF)" \
-	    --to="$(SUBSTITUTED_LR_CFG)"	    
-	@echo -e $(BUILD_TIME) >> "$(SUBSTITUTED_DSPACE_CFG)"
-	@cd $(BASE) && python setup.lindat.py \
-	    --substitute="$(DIR_CONF)/description*xml" \
-	    --substitute-alternative="$(DIR_CONF_TEMPLATE)/description*xml" \
-	    --with="$(LOCAL_CONF)" \
-	    --to="$(DIR_SOURCE)/dspace/config/crosswalks/oai/"
-
-compile: deploy_logs substitute_configs
+compile: deploy_logs
 	@echo "COMPILING SOURCE ..."
+	@cd $(DIR_SOURCE) && (echo -e "/lr.compile.time/\n. s/=.*/=`date`/\nw" | red $(MVN_ENV).properties) > /dev/null 2>&1
 	@cd $(DIR_SOURCE) && mvn $(MVN_OPTS) package 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log
 
-install:        substitute_configs \
-                print_message \
+install:        print_message \
                 test_databases \
                 user_prompt \
                 install_dspace
 
-install_guru:   substitute_configs \
-                print_message \
+install_guru:   print_message \
                 install_dspace
 
 install_dspace: 
@@ -236,7 +202,7 @@ postinstall: update_lindat_common
 	@$(MAKE) grant_rights
 	@echo "DEPLOYMENT (INSTALL + POSTINSTALL) SUCCESSFUL"
 
-fresh_install: substitute_configs update_lindat_common
+fresh_install: update_lindat_common
 	@echo "INSTALLING FRESH LINDAT/CLARIN DSpace ..."
 	@cd $(DIR_BUILD) && $(ANT_WITH_CONF) fresh_install 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log 
 
@@ -263,10 +229,10 @@ user_prompt: tools_version_check
 # databased related
 #
 
-test_dspace_database: substitute_configs
+test_dspace_database: 
 	@cd $(DIR_BUILD) && $(ANT_WITH_CONF) -logger org.apache.tools.ant.listener.AnsiColorLogger test_database | $(HIDE_PASSW)
 
-test_utilities_database: substitute_configs
+test_utilities_database: 
 	@cd $(DIR_SOURCE)/utilities && mvn exec:java -Dexec.mainClass="cz.cuni.mff.ufal.lindat.utilities.HibernateFunctionalityManager"
 
 test_databases: test_utilities_database test_dspace_database
@@ -290,7 +256,7 @@ update_metadata_scheme:
 	@echo "Updating metadata scheme with local scheme"
 	cd ${DIR_INSTALLATION}/bin; ./dspace registry-loader -dc ../config/registries/local-types.xml
 
-setup_database: substitute_configs
+setup_database: 
 	@cd $(DIR_BUILD) && $(ANT_WITH_CONF) setup_database
 	
 restore_database:
@@ -303,12 +269,12 @@ restore_database:
 # build related - advanced
 #
 
-update_code: substitute_configs
+update_code: 
 	@echo "UPDATING CODE ..."
 	@cd $(DIR_BUILD) &&  $(ANT_WITH_CONF) update_code 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log 
 	@echo "SUCCESSFUL"
 
-update_config: substitute_configs
+update_config: 
 	@echo "UPDATING CONFIG ..."
 	@cd $(DIR_BUILD) &&  $(ANT_WITH_CONF) update_configs 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log 
 	@echo "SUCCESSFUL"
