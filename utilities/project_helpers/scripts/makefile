@@ -33,7 +33,6 @@ BASE				:=$(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 PROJECT_DIR			:=$(BASE)/..
 DIR_CONF            :=$(PROJECT_DIR)/config
 DIR_SUBST           :=$(DIR_CONF)/_substituted
-DIR_CONF_TEMPLATE   :=$(DIR_CONF)/template
 
 DIR_SOURCE          :=$(PROJECT_DIR)/sources
 DIR_BUILD           :=$(DIR_SOURCE)/dspace/target/dspace-installer
@@ -47,7 +46,7 @@ DIR_DEPLOY_LOGS     :=$(PROJECT_DIR)/logs
 # either include variable from config/ or from config/dist 
 
 VARIABLE_FILE       :=$(DIR_CONF)/variable.makefile
-VARIABLE_FILE_DIST  :=$(DIR_CONF_TEMPLATE)/variable.makefile
+VARIABLE_FILE_DIST  :=$(DIR_CONF)/variable.makefile.example
 
 ifneq ("$(wildcard $(VARIABLE_FILE))","")
   $(info Using variables from $(VARIABLE_FILE))
@@ -100,10 +99,6 @@ NORMAL  =\e[0m
 
 #
 
-TMP_FILE:=$(shell mktemp)
-
-#
-
 DATABASE_RESTORE_DIRECTORY=.
 # TODO: from backup.conf
 DATABASE_BACKUP_DIRECTORY=/home/backup
@@ -124,9 +119,6 @@ mvn_help:
 #======================================================
 # setup related
 #
-
-setup:
-	./setup.prerequisites.sh
 
 add_cronjobs:
 	(crontab -l ; echo "00 04     * * 1     cd $(BASE); sudo make send_info") | crontab -
@@ -181,6 +173,9 @@ compile: deploy_logs
 	@echo "COMPILING SOURCE ..."
 	@cd $(DIR_SOURCE) && (echo -e "/lr.compile.time/\n. s/=.*/=`date`/\nw" | red $(MVN_ENV).properties) > /dev/null 2>&1
 	@cd $(DIR_SOURCE) && mvn $(MVN_OPTS) package 2>&1 | $(HIDE_PASSW) | tee $(DIR_DEPLOY_LOGS)/$@.log
+	@echo ""
+	@if grep -q "BUILD FAILURE" $(DIR_DEPLOY_LOGS)/compile.log; then \
+	        echo -e "$(RED)compile.log contains BUILD FAILURE, exiting$(NORMAL)" && exit -1; fi
 
 install:        print_message \
                 test_databases \
@@ -211,14 +206,13 @@ grant_rights:
 	sudo chown -R $(TOMCAT_USER):$(TOMCAT_GROUP) $(DIR_INSTALLATION)
 	sudo chmod -R g+w $(DIR_INSTALLATION)
 	
+# maven uses prerequisites to check for mvn version
+# keep this here for non _guru builds
 tools_version_check:
 	@cd $(BASE) && python setup.lindat.py --ant-version=1.8
 	@cd $(BASE) && python setup.lindat.py --mvn-version=3.0
 
 user_prompt: tools_version_check
-	@echo ""
-	@if grep -q "BUILD FAILURE" $(DIR_DEPLOY_LOGS)/compile.log; then \
-	        echo -e "$(RED)compile.log contains BUILD FAILURE$(NORMAL)" && exit -1; fi
 	@echo ""
 	@echo -e "$(RED)Do you really wish to continue? (for Yes type Yes)$(NORMAL)"
 	@python -c 'import sys; sys.exit(-1) if raw_input() != "Yes" else None'
@@ -245,20 +239,17 @@ create_databases:
 	sudo -u postgres psql -p $(DB_PORT) $(UTILITIES_DATABASE_NAME) < $(DIR_UTILITIES)/licenses.sql
 	@echo "DONE"
 
+#update utilities database
+#dspace5+ db updated through flywaydb only!
 update_databases:
 	@echo "UPDATING UTILITIES DATABASE ..."
 	@echo "RUN e.g., sudo -u postgres psql -p $(DB_PORT) $(UTILITIES_DATABASE_NAME) < ../sources/utilities/licenses.2014.12.17.sql"
-	@echo "UPDATING DSpace DATABASE ..."
-	@echo "RUN e.g., sudo -u postgres psql -p $(DB_PORT) $(DATABASE_NAME) < ./upgrades/dspace.2014.03.18.sql"
 	@echo DONE
 
 update_metadata_scheme:
 	@echo "Updating metadata scheme with local scheme"
-	cd ${DIR_INSTALLATION}/bin; ./dspace registry-loader -dc ../config/registries/local-types.xml
+	cd ${DIR_INSTALLATION}/bin; ./dspace registry-loader -metadata ../config/registries/local-types.xml
 
-setup_database: 
-	@cd $(DIR_BUILD) && $(ANT_WITH_CONF) setup_database
-	
 restore_database:
 	@echo "RESTORING DATABASE $(DATABASE_NAME) FROM $(RESTORE_FROM_DATABASE) ..."
 	@sudo -u postgres pg_dump -p $(DB_PORT) --clean "$(RESTORE_FROM_DATABASE)" | sudo -u postgres psql -p $(DB_PORT) "$(DATABASE_NAME)" > $(DIR_DEPLOY_LOGS)/$@.log
@@ -297,6 +288,7 @@ update_lindat_common: check_lindat_common
 #
 
 # Command starts all running services to provide webserver (to fully $(MAKE) them run)
+#TODO start/stop action for apache/nginx, etc
 start:  start_postgres \
 		start_tomcat \
         start_handle_server
@@ -366,7 +358,7 @@ init_statistics:
 	$(DSPACE_BIN) stat-initial
 	$(DSPACE_BIN) stat-report-initial
 
-# This command update statistics that has to be updated to be viewed correctly
+# This command updates statistics that has to be updated to be viewed correctly
 update_statistics:
 	$(DSPACE_BIN) stat-general
 	$(DSPACE_BIN) stat-monthly
@@ -380,16 +372,9 @@ update_sitemap:
 lift_embargos:
 	$(DSPACE_BIN) embargo-lifter -v
 
-# This command updates the sitemap
+# This command creates and sends repository report
 send_info:
 	$(DSPACE_BIN) ufal-info -e default
-
-# This command init indicies that has to be updated to be viewed correctly
-init_indicies:
-	$(DSPACE_BIN) index-init
-
-update_indicies:
-	$(DSPACE_BIN) index-update
 
 update_oai:
 	LC_ALL=en_US.UTF-8 $(DSPACE_BIN) oai import
@@ -399,12 +384,13 @@ rebuild_oai:
 	LC_ALL=en_US.UTF-8 $(DSPACE_BIN) oai import -c 
 
 update_discovery:
-	@echo 'Updating solr dicovery indicies ...'
-	$(DSPACE_BIN) update-discovery-index
+	@echo 'Updating search & browse indicies (solr) ...'
+	$(DSPACE_BIN) index-discovery
 
 generate_handle_list:
-	@sudo -u $(DSPACE_USER) psql $(DATABASE_NAME) -c "select handle from handle where resource_id in (select item_id from item where in_archive = 't' and withdrawn = 'f');" | tail -n +3 | head -n -2
+	@sudo -u $(DSPACE_USER) psql -p $(DB_PORT) $(DATABASE_NAME) -c "select handle from handle where resource_id in (select item_id from item where in_archive = 't' and withdrawn = 'f');" | tail -n +3 | head -n -2
 
+#TODO make this cron friendly
 update_openaire_cache:
 	$(DIR_INSTALLATION)/bin/openaire-refresh-list
 
@@ -415,7 +401,7 @@ update_openaire_cache:
 
 substitute_backup_config:
 	@cd $(BASE) && python setup.lindat.py \
-	    --substitute="$(DIR_CONF_TEMPLATE)/backup2l.conf" \
+	    --substitute="$(DIR_CONF)/backup2l.conf.example" \
 	    --substitute-alternative="$(DIR_CONF)/backup2l.conf" \
 	    --with="$(LOCAL_CONF)" \
 	    --to="$(DIR_SUBST)/backup2l.conf.substituted"
@@ -448,6 +434,7 @@ restore_backup: substitute_backup_config
 # tests
 #
 
-selenium_tests:
-	@cd $(BASE)/../sources/tests; export DISPLAY=:99; /etc/init.d/xvfb start; ant
-	@/etc/init.d/xvfb stop
+#TODO no tests present 
+#selenium_tests:
+#	@cd $(BASE)/../sources/tests; export DISPLAY=:99; /etc/init.d/xvfb start; ant
+#	@/etc/init.d/xvfb stop

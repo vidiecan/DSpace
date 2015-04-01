@@ -301,6 +301,8 @@ ALTER TABLE ONLY license_resource_user_allowance ALTER COLUMN transaction_id SET
 -- Data for Name: license_definition; Type: TABLE DATA; Schema: public; Owner: dspace
 --
 
+select setval('license_definition_license_id_seq', 10);
+
 COPY license_definition (license_id, name, definition, eperson_id, label_id, created_on, confirmation) FROM stdin;
 8	Creative Commons - Attribution 3.0 Unported (CC BY 3.0)	http://creativecommons.org/licenses/by/3.0/	1	4	2011-12-14 23:05:10.936108	0
 7	PDT 2.0 License	http://ufal.mff.cuni.cz/pdt2.0/doc/pdt-guide/en/html/ch07.html	1	2	2011-12-14 21:38:22.407755	2
@@ -509,3 +511,19 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 
 
+-- from licenses.2014.12.17.sql
+-- See #74 in lindat-repository
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Affero General Public License 1 (AGPL-1.0)','http://www.affero.org/oagpl.html','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Affero General Public License 3 (AGPL-3.0)','http://opensource.org/licenses/AGPL-3.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Common Development and Distribution License (CDDL-1.0)','http://opensource.org/licenses/CDDL-1.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Eclipse Public License 1.0 (EPL-1.0)','http://opensource.org/licenses/EPL-1.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('GNU General Public License 2 or later (GPL-2.0)','http://opensource.org/licenses/GPL-2.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('GNU Library or "Lesser" General Public License 2.1 (LGPL-2.1)','http://opensource.org/licenses/LGPL-2.1','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('GNU Library or "Lesser" General Public License 2.1 or later (LGPL-2.1)','http://opensource.org/licenses/LGPL-2.1','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('GNU Library or "Lesser" General Public License 3.0 (LGPL-3.0)','http://opensource.org/licenses/LGPL-3.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Mozilla Public License 2.0','http://opensource.org/licenses/MPL-2.0','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Open Data Commons Attribution License (ODC-By)','http://opendatacommons.org/licenses/by/summary/','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Open Data Commons Open Database License (ODbL)','http://opendatacommons.org/licenses/odbl/summary/','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Open Data Commons Public Domain Dedication and License (PDDL)','http://opendatacommons.org/licenses/pddl/summary/','1','1','2014-12-17 14:05:00','0');
+INSERT INTO license_definition (name, definition, eperson_id, label_id, created_on, confirmation) VALUES ('Public Domain Mark (PD)','http://creativecommons.org/publicdomain/mark/1.0/','1','1','2014-12-17 14:05:00','0');
+UPDATE license_definition SET name='Public Domain Dedication (CC Zero)',definition='http://creativecommons.org/publicdomain/zero/1.0/' where name ='CC0-No Rights Reserved';
