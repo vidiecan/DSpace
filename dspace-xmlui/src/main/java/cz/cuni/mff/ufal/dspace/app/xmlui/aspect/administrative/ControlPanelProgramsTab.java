@@ -39,7 +39,7 @@ public class ControlPanelProgramsTab extends AbstractControlPanelTab {
 		List form = div.addList("standalone-programs");
 		form.setHead("Standalone programs to run");
 
-		form.addLabel(null, "bold").addContent("SOLR backend (discovery) (update-discovery-index)");
+		form.addLabel(null, "bold").addContent("SOLR backend (browse/search) (index-discovery)");
 		form.addItem().addButton("submit_update_solr").setValue("Clean then reindex solr (-f)");
 		
 		form.addLabel();
@@ -50,15 +50,6 @@ public class ControlPanelProgramsTab extends AbstractControlPanelTab {
 		
 		form.addLabel();
 		form.addItem().addButton("submit_opt_solr").setValue("Optimise solr (you sure?) (-o)");
-
-		form.addLabel();
-		form.addItem().addContent(" ");
-		form.addLabel(null, "bold").addContent("Searching postgresql index (sort of solr facets cache?)");
-		form.addItem().addButton("submit_create_indices").setValue("Create tables (no index) (-t)");
-		form.addLabel();
-		form.addItem().addButton("submit_index_indices").setValue("Index (-i)");
-		form.addLabel();
-		form.addItem().addButton("submit_reindex_indices").setValue("Clean and reindex (-r -f)");
 
 		form.addLabel();
 		form.addItem().addContent(" ");
@@ -100,28 +91,16 @@ public class ControlPanelProgramsTab extends AbstractControlPanelTab {
 		//
 		if (request.getParameter("submit_update_solr") != null) {
 			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "update-discovery-index", "-f" });
+					"./dspace", "index-discovery", "-f" });
 		} else if (request.getParameter("submit_rebuild_solr") != null) {
 			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "update-discovery-index", "-b" });
+					"./dspace", "index-discovery", "-b" });
 		} else if (request.getParameter("submit_opt_solr") != null) {
 			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "update-discovery-index", "-o" });
+					"./dspace", "index-discovery", "-o" });
 		} else if (request.getParameter("submit_clean_solr") != null) {
 			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "update-discovery-index", "-c", "-f" });
-		}
-		// postgresql index
-		//
-		else if (request.getParameter("submit_create_indices") != null) {
-			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "index", "-t" });
-		} else if (request.getParameter("submit_create_indices") != null) {
-			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "index", "-i" });
-		} else if (request.getParameter("submit_reindex_indices") != null) {
-			message = IOUtils.run(new File(dspace_dir + "/bin/"), new String[] {
-					"./dspace", "index", "-r", "-f" });
+					"./dspace", "index-discovery", "-c", "-f" });
 		}
 		// assetstore
 		//
