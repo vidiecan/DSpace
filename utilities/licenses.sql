@@ -476,6 +476,8 @@ INSERT INTO license_label values(8,'ND','No Derivative Works',true);
 INSERT INTO license_label values(9,'Inf','Inform Before Use',true);
 INSERT INTO license_label values(10,'ReD','Redeposit Modified',true);
 
+select setval('license_label_label_id_seq ',11);
+
 
 select setval('license_label_extended_mapping_mapping_id_seq', 25);
 
