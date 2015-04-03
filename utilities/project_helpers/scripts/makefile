@@ -286,70 +286,34 @@ update_lindat_common: check_lindat_common
 
 
 #======================================================
-# apache/tomcat related
+# webserver&co. related
 #
 
 # Command starts all running services to provide webserver (to fully $(MAKE) them run)
-#TODO start/stop action for apache/nginx, etc
-start:  start_postgres \
-		start_tomcat \
-        start_handle_server
-        #start_shibboleth \
-        #start_apache
+start:  
+	@if [[ -f start_stack.sh ]]; then \
+            bash start_stack.sh; \
+        elif [[ -f start_stack_example.sh ]]; then \
+            bash start_stack_example.sh; \
+        else \
+            echo "Nothing to start, do you have start_stack.sh?"; \
+        fi
 
 # Command stops all running services to provide webserver (to fully dislocate them)
-stop:	 stop_handle_server \
-        stop_tomcat \
-        stop_postgres
-        #stop_shibboleth \
-        #stop_apache \
+stop:	
+	@if [[ -f stop_stack.sh ]]; then \
+            bash stop_stack.sh; \
+        elif [[ -f stop_stack_example.sh ]]; then \
+            bash stop_stack_example.sh; \
+        else \
+            echo "Nothing to stop, do you have stop_stack.sh?"; \
+        fi
 
-# This command just restart all the services that are needed to fully reload the apache, tomcat and shibboleth
+# This command just restart all the services
 restart:
 	@$(MAKE) stop
 	@sleep 3 ;
 	@$(MAKE) start
-
-start_apache:
-	@echo "Starting apache"	
-	@sh $(APACHE) start
-
-stop_apache:
-	@echo "Stopping apache"
-	@sh $(APACHE) stop
-
-# Command starts tomcat
-start_tomcat:
-	@echo "Starting tomcat"
-	@sh $(TOMCAT) start
-
-# Command stops tomcat
-stop_tomcat:
-	@echo "Stopping tomcat"
-	@sh $(TOMCAT) stop
-
-start_shibboleth:
-	@echo "Starting shibboleth"
-	@mkdir -p /var/run/shibboleth
-	@if [[ -f $(SHIB) ]]; then sh $(SHIB) start; else echo "Shibboleth [$(SHIB)] not present!"; fi
-
-stop_shibboleth:
-	@echo "Stopping shibboleth"
-	@sh $(BASE)/stop.shibboleth.sh
-
-stop_postgres:
-	@echo "Stopping postgres"
-	@sh $(POSTGRES) stop
-	
-start_postgres:
-	@echo "Starting postgres"
-	@sh $(POSTGRES) start
-
-start_handle_server:
-	@if [[ -r $(HANDLE_SERVER) ]]; then echo "Starting handle server"; sh $(HANDLE_SERVER) start; else echo "Handle server not present - ignoring start command"; fi
-
-stop_handle_server:
-	@if [[ -r $(HANDLE_SERVER) ]]; then echo "Stopping handle server"; sh $(HANDLE_SERVER) stop; else echo "Handle server not present - ignoring stop command"; fi
 
 #======================================================
 # dspace helpers
